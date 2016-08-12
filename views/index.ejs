@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+    <link rel='stylesheet'
+          href='/stylesheets/style.css'/>
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<button id="eventEmitter">Click me to emit an event!</button>
+<h1 id="welcomeMessage"></h1>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('<%= path %>');
+
+    var button = document.getElementById('eventEmitter');
+    button.addEventListener('click', function () {
+        socket.emit('welcome other users', {some: 'data'});
+    });
+
+    socket.on('welcome other users', function (data) {
+        document.getElementById('welcomeMessage').innerHTML = 'HELLO ALL USERS!';
+    });
+</script>
+</body>
 </html>

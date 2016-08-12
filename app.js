@@ -4,11 +4,25 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var http = require('http');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+  socket.on('welcome other users', function (data) {
+    io.sockets.emit('welcome other users', {});
+  });
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -57,4 +71,4 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = app;
+module.exports = {app, server};
