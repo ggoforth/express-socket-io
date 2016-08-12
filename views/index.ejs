@@ -20,7 +20,7 @@
     });
 
     socket.on('welcome other users', function (data) {
-        document.getElementById('welcomeMessage').innerHTML = 'HELLO ALL USERS!';
+        document.getElementById('welcomeMessage').innerHTML = data;
     });
 </script>
 </body>

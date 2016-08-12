@@ -14,8 +14,10 @@ var server = http.createServer(app);
 var io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
+  console.log('user connected');
+  
   socket.on('welcome other users', function (data) {
-    io.sockets.emit('welcome other users', {});
+    io.sockets.emit('welcome other users', 'Welcome to our website!');
   });
 });
 
