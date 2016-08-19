@@ -21,6 +21,15 @@
   
   window.Orders = {
     /**
+     * Find an order in the orders array by index.
+     * 
+     * @param index
+     */
+    getOrderByIndex: function (index) {
+      return orders[index] ? orders[index] : null; 
+    },
+    
+    /**
      * Array of functions that want to be notified when a new
      * order comes in.
      */
@@ -63,7 +72,8 @@
      * @returns {*}
      */
     getOrder: function (orderId) {
-      return $.ajax({url: '/js/order.json'});
+      var orders = ['order.json', 'order2.json', 'order3.json'];
+      return $.ajax({url: '/js/' + orders[_.random(0, orders.length - 1)]});
     }
   };
   

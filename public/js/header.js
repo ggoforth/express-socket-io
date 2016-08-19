@@ -20,7 +20,10 @@
   Orders.registerOrderNotification(function () {
     $numOrders.text(Orders.numOrders()); 
   });
-  
-  setInterval(setDateTime, 10000);
+
+  /**
+   * Set the date and time on the header.
+   */
   setDateTime();
+  setInterval(setDateTime, 10000);
 }(moment));

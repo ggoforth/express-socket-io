@@ -18,14 +18,19 @@
 <body>
 <div class="container-fluid">
     <header class="row kiosk-header">
-        <div class="col-md-12">
+        <div class="col-md-12 text-center">
             <img src="/images/butterfish-horiz.png"
+                 class="pull-left"
                  alt="Butterfish">
 
             <span class="orders-waiting">Orders Waiting: <span class="num-orders">0</span></span>
 
             <div class="date-time pull-right"></div>
         </div>
+    </header>
+
+    <header class="row order-header">
+        <div class="col-md-12 order-header-inner">&nbsp;</div>
     </header>
 
     <div class="row row-horizon order-columns"></div>
@@ -37,9 +42,11 @@
 <script src="/assets/jquery/dist/jquery.min.js"></script>
 <script src="/assets/lodash/dist/lodash.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="/assets/mousetrap/mousetrap.min.js"></script>
 
 <script src="/js/orders.js"></script>
 <script src="/js/header.js"></script>
 <script src="/js/app.js"></script>
+<script src="/js/keyboard.js"></script>
 </body>
 </html>

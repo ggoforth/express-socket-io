@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, _) {
 
   'use strict';
 
@@ -10,6 +10,7 @@
    */
   var $orderColumns = $('.order-columns'),
     orderColumnsOffset = $orderColumns.offset(),
+    $orderHeader = $('.order-header-inner'),
     $window = $(window),
     orderRendered = false;
 
@@ -18,7 +19,7 @@
    */
   $window.on('resize layout-columns', function () {
     $orderColumns.find('.order-column')
-      .height($window.height() - orderColumnsOffset.top - 15);
+      .height($window.height() - orderColumnsOffset.top - 40);
   }).resize();
 
   /**
@@ -47,12 +48,9 @@
       var itemGroup = _.groupBy(items, 'item');
 
       _.forOwn(itemGroup, function (items, itemName) {
-        var _item = itemName;
-
-        if (items.length > 1) {
-          _item += ' x ' + items.length;
-        }
-
+        var _item = '';
+        if (items.length > 1) _item += ' ' + items.length + ' x ';
+        _item += itemName;
         $header.find('.step-items').append('<li>' + _item + '</li>');
       });
     });
@@ -69,45 +67,59 @@
    * @returns {*|HTMLElement}
    */
   function orderHeaderHTML(order) {
-    var $orderHeader = $('<header></header>');
+    var $orderHeader = $('<div></div>');
 
     $orderHeader.append('<span class="pull-right">' + moment().format('h:mm A') + '</span>');
+    if (order.name) $orderHeader.append('<span class="order-name">' + order.name + '</span>');
+    if (order.seats.length) $orderHeader.append('<span class="num-seats">' + order.seats.length + ' Seats</span>');
 
-    if (order.name) {
-      $orderHeader.append('<div class="order-name">' + order.name + '</div>');
-    }
-
-    if (order.seats.length) {
-      $orderHeader.append('<div class="num-seats">' + order.seats.length + ' Seats</div>');
-    }
-
-    return $orderHeader;
+    return $orderHeader.html();
   }
 
   /**
    * Adds a column to the order view.
    *
    * @param order
+   * @param seat
    */
-  function addColumn(order) {
-    if (orderRendered) return; 
-    
+  function renderColumn(order, seat) {
     var $column = $('<div></div>')
       .addClass('col-md-2 order-column')
-      .append(orderHeaderHTML(order))
-      .append(_.map(_.shuffle(order.seats), buildSeatHTML).join(''));
+      .append(buildSeatHTML(seat));
 
     //Stick the column in the dom and trigger a layout
     $orderColumns.append($column);
-    $window.trigger('layout-columns');
-    orderRendered = true;    
   }
+
+  /**
+   * Responsible for rendering an order on the screen.
+   *
+   * @param order
+   * @param force
+   */
+  window.renderOrder = function renderOrder(order, force) {
+    if (orderRendered && !force) return;
+    
+    var orderHeaderContent = orderHeaderHTML(order);
+    $orderHeader.html(orderHeaderContent);
+    _.each(order.seats, renderColumn.bind({}, order));
+    $window.trigger('layout-columns');
+    orderRendered = true;
+  };
+
+  /**
+   * Clear an order.
+   */
+  window.clearOrder = function clearOrder() {
+    $orderHeader.html('&nbsp;');
+    $orderColumns.empty();
+  };
 
   /**
    * Set the function that should take an order and draw
    * it on the screen.
    *
-   * @type {addColumn}
+   * @type {renderColumn}
    */
-  Orders.registerOrderNotification(addColumn);
-}(jQuery));
+  Orders.registerOrderNotification(renderOrder);
+}(jQuery, _));
