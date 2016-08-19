@@ -2,26 +2,42 @@
 <html>
 <head>
     <title><%= title %></title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Open+Sans">
+
+    <link rel="stylesheet"
+          href="/assets/bootstrap/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="/assets/bootstrap-horizon/bootstrap-horizon.css">
+
     <link rel='stylesheet'
           href='/stylesheets/style.css'/>
 </head>
 <body>
-<h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
-<button id="eventEmitter">Click me to emit an event!</button>
-<h1 id="welcomeMessage"></h1>
-<script src="/socket.io/socket.io.js"></script>
+<div class="container-fluid">
+    <header class="row kiosk-header">
+        <div class="col-md-12">
+            <img src="/images/butterfish-horiz.png"
+                 alt="Butterfish">
+
+            <div class="date-time pull-right"></div>
+        </div>
+    </header>
+
+    <div class="row row-horizon order-columns"></div>
+</div>
 <script>
-    var socket = io.connect('<%= path %>');
-
-    var button = document.getElementById('eventEmitter');
-    button.addEventListener('click', function () {
-        socket.emit('welcome other users', {some: 'data'});
-    });
-
-    socket.on('welcome other users', function (data) {
-        document.getElementById('welcomeMessage').innerHTML = data;
-    });
+    window.SOCKETPATH = '<% path %>';
 </script>
+<script src="/assets/moment/min/moment.min.js"></script>
+<script src="/assets/jquery/dist/jquery.min.js"></script>
+<script src="/assets/lodash/dist/lodash.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="/js/header.js"></script>
+<script src="/js/orders.js"></script>
+<script src="/js/app.js"></script>
 </body>
 </html>
