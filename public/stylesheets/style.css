@@ -62,5 +62,15 @@ header .date-time {
     color: #FFFFFF;
 }
 
+.orders-waiting {
+    color: #FFFFFF;
+    margin-left: 30px;
+    font-size: 1.1em;
+}
+
+.orders-waiting .num-orders {
+    display: inline-block;
+    margin-left: 5px;
+}
 
 

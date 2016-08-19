@@ -3,14 +3,15 @@
   'use strict';
 
   /**
-   * Get references to all the nodes we are gonna 
+   * Get references to all the nodes we are gonna
    * want to manipulate.
-   * 
+   *
    * @type {*|HTMLElement}
    */
   var $orderColumns = $('.order-columns'),
     orderColumnsOffset = $orderColumns.offset(),
-    $window = $(window);
+    $window = $(window),
+    orderRendered = false;
 
   /**
    * Draw the columns to full screen height
@@ -22,7 +23,7 @@
 
   /**
    * Build out one seat for the order display.
-   * 
+   *
    * @param seat
    * @returns {*}
    */
@@ -37,9 +38,9 @@
 
     _.forOwn(seat.selected_items, function (items, step) {
       if (!items.length) return;
-      
+
       var $header = $('<li>' + _.capitalize(step) + '<ul class="step-items"></ul></li>');
-      
+
       $items.append($header);
 
       //Group the items by type, so we can determine how many of each item appear for a given step
@@ -47,11 +48,11 @@
 
       _.forOwn(itemGroup, function (items, itemName) {
         var _item = itemName;
-        
+
         if (items.length > 1) {
           _item += ' x ' + items.length;
         }
-        
+
         $header.find('.step-items').append('<li>' + _item + '</li>');
       });
     });
@@ -63,33 +64,34 @@
 
   /**
    * Build the order header.
-   * 
+   *
    * @param order
    * @returns {*|HTMLElement}
    */
   function orderHeaderHTML(order) {
     var $orderHeader = $('<header></header>');
 
-    $orderHeader.append('<span class="pull-right">' + moment().format('h:mm A')  + '</span>');
-    
+    $orderHeader.append('<span class="pull-right">' + moment().format('h:mm A') + '</span>');
+
     if (order.name) {
       $orderHeader.append('<div class="order-name">' + order.name + '</div>');
     }
-    
+
     if (order.seats.length) {
       $orderHeader.append('<div class="num-seats">' + order.seats.length + ' Seats</div>');
     }
-    
-    
+
     return $orderHeader;
   }
-  
+
   /**
    * Adds a column to the order view.
    *
    * @param order
    */
   function addColumn(order) {
+    if (orderRendered) return; 
+    
     var $column = $('<div></div>')
       .addClass('col-md-2 order-column')
       .append(orderHeaderHTML(order))
@@ -98,13 +100,14 @@
     //Stick the column in the dom and trigger a layout
     $orderColumns.append($column);
     $window.trigger('layout-columns');
+    orderRendered = true;    
   }
 
   /**
-   * Set the function that should take an order and draw 
+   * Set the function that should take an order and draw
    * it on the screen.
-   * 
+   *
    * @type {addColumn}
    */
-  Orders.onNewOrder = addColumn; 
+  Orders.registerOrderNotification(addColumn);
 }(jQuery));

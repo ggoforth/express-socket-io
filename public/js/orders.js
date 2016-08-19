@@ -12,17 +12,29 @@
   socket.on('newOrder', function (data) {
     Orders.getOrder(data)
       .then(Orders.storeOrder)
-      .then(Orders.onNewOrder);
+      .then(function (order) {
+        _.each(Orders._orderNotification, function (func) {
+          func(order); 
+        });
+      });
   });
   
   window.Orders = {
     /**
-     * Meant to be overridden. When a new order comes in, the
-     * getOrder function will delegate to this.  This should
-     * be set outside of the orders.js file an implement 
-     * what happens when a new order comes in.
+     * Array of functions that want to be notified when a new
+     * order comes in.
      */
-    onNewOrder: _.identity,
+    _orderNotification: [],
+
+    /**
+     * Register a new function for order notifications.
+     * 
+     * @param func
+     */
+    registerOrderNotification: function (func) {
+      if (!_.isFunction(func)) return;
+      this._orderNotification.push(func);
+    },
 
     /**
      * Store the order client side.
@@ -33,6 +45,15 @@
     storeOrder: function (order) {
       orders.push(order);
       return order;
+    },
+
+    /**
+     * The current number of orders.
+     * 
+     * @returns {number|Number}
+     */
+    numOrders: function () {
+      return orders.length; 
     },
     
     /**
