@@ -23,7 +23,7 @@ header .date-time {
 }
 
 .order-column {
-    /*border-right: 1px dashed #8E898B;*/
+    border-right: 1px dashed #8E898B;
     position: relative;
     overflow-y: auto;
     padding: 20px;
