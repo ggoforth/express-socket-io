@@ -21,6 +21,15 @@
   
   window.Orders = {
     /**
+     * Find the index of an order.
+     * 
+     * @param order
+     */
+    getOrderIndex: function (order) {
+      return _.indexOf(orders, order);  
+    },
+    
+    /**
      * Find an order in the orders array by index.
      * 
      * @param index

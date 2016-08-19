@@ -11,6 +11,7 @@
   var $orderColumns = $('.order-columns'),
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
+    $currentOrderIndex = $('.current-order-index'),
     $window = $(window),
     orderRendered = false;
 
@@ -101,6 +102,7 @@
     if (orderRendered && !force) return;
     
     var orderHeaderContent = orderHeaderHTML(order);
+    $currentOrderIndex.text(Orders.getOrderIndex(order) + 1); 
     $orderHeader.html(orderHeaderContent);
     _.each(order.seats, renderColumn.bind({}, order));
     $window.trigger('layout-columns');

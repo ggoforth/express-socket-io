@@ -84,3 +84,8 @@ header .date-time {
     display: inline-block;
     margin-right: 30px;
 }
+
+.current-order-index {
+    display: inline-block;
+    margin-right: 6px;
+}
