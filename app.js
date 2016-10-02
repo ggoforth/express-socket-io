@@ -1,17 +1,20 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var http = require('http');
+'use strict';
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+const express = require('express'),
+  path = require('path'),
+  favicon = require('serve-favicon'),
+  logger = require('morgan'),
+  cookieParser = require('cookie-parser'),
+  bodyParser = require('body-parser'),
+  http = require('http'),
+  routes = require('./routes/index'),
+  users = require('./routes/users'),
+  app = express(),
+  server = http.createServer(app),
+  db = require('./modules/db'),
+  io = require('socket.io')(server);
 
-var app = express();
-var server = http.createServer(app);
-var io = require('socket.io')(server);
+db.init();
 
 io.on('connection', (socket) => {
   console.log('user connected');
