@@ -6,6 +6,18 @@
     orders = [];
 
   /**
+   * Join a given room.
+   */
+  socket.emit('join location', window.locationId);
+
+  /**
+   * Once we join a room.
+   */
+  socket.on('room joined', function (data) {
+    console.log('Socket connected with locationId: ' + data.locationId);
+  });
+  
+  /**
    * When a new order comes in, we need to retrieve a version of
    * the order object from the server.
    */

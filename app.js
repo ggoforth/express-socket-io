@@ -15,6 +15,16 @@ var io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
   console.log('user connected');
+
+  socket.on('join location', locationId => {
+    socket.join(locationId);
+    
+    io.sockets.emit('blah', {});
+  
+    io.sockets
+      .in(locationId)
+      .emit('room joined', {locationId: locationId});
+  });
   
   socket.on('welcome other users', function (data) {
     io.sockets.emit('welcome other users', 'Welcome to our website!');
