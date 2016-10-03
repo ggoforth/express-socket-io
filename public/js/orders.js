@@ -21,15 +21,21 @@
    * When a new order comes in, we need to retrieve a version of
    * the order object from the server.
    */
-  socket.on('newOrder', function (data) {
-    Orders.storeOrder(data);
+  socket.on('newOrder', function (order) {
+    Orders.storeOrder(order);
     
     _.each(Orders._orderNotification, function (func) {
-      func(data);
+      func(order);
     });
+    
+    Orders.print(order);
   });
 
   window.Orders = {
+    print: function (order) {
+      
+    },
+    
     /**
      * Find the index of an order.
      *
@@ -83,18 +89,6 @@
      */
     numOrders: function () {
       return orders.length;
-    },
-
-    /**
-     * Get an order by id.
-     *
-     * @param orderId
-     * @returns {*}
-     */
-    getOrder: function (orderId) {
-      var orders = ['order.json', 'order2.json', 'order3.json'];
-      return $.ajax({url: '/js/' + orders[_.random(0, orders.length - 1)]});
     }
   };
-
 }());
