@@ -33,12 +33,13 @@
     var $cont = $('<div></div>'),
       $seat = $('<ul></ul>').addClass('seat'),
       $order = $('<li>' + _.capitalize(seat.bowl_size) + ' Bowl</li>'),
-      $items = $('<ul></ul>').addClass('items');
-
+      $items = $('<ul></ul>').addClass('items'),
+      items = _.groupBy(seat.selected_items, 'category.name');
+    
     $order.append($items);
     $seat.append($order);
 
-    _.forOwn(seat.selected_items, function (items, step) {
+    _.forOwn(items, function (items, step) {
       if (!items.length) return;
 
       var $header = $('<li>' + _.capitalize(step) + '<ul class="step-items"></ul></li>');
@@ -46,7 +47,7 @@
       $items.append($header);
 
       //Group the items by type, so we can determine how many of each item appear for a given step
-      var itemGroup = _.groupBy(items, 'item');
+      var itemGroup = _.groupBy(items, 'name');
 
       _.forOwn(itemGroup, function (items, itemName) {
         var _item = '';

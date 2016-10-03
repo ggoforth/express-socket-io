@@ -28,9 +28,9 @@ function getOrder(req, res) {
    */
   let orderId = req.method.toLowerCase() === 'post' ? 
     req.body.orderId : req.params.orderId,
-    locationId = req.params.locationId;
+    location_id = req.params.locationId;
 
-  Order.find({locationId, _id: orderId})
+  Order.findOne({location_id, _id: orderId})
     .then(order => {
       req.io
         .sockets

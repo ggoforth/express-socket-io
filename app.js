@@ -27,6 +27,8 @@ db.init()
       console.log('user connected');
 
       socket.on('join location', locationId => {
+        console.log(`User joined location ${locationId}`);
+        
         // Join a specified location.
         socket.join(locationId);
 
