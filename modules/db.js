@@ -3,7 +3,7 @@
 const mongoose = require('mongoose'),
   fs = require('fs'),
   Promise = require('bluebird'),
-  modelsPath = './models',
+  modelsPath = `${process.cwd()}/models`,
   glob = Promise.promisify(require('glob'));
 
 const models = () => glob(`${modelsPath}/**/*.js`);
@@ -14,14 +14,17 @@ module.exports = {
 
     let db = mongoose.connection;
     
-    models()
+    return models()
       .then(m => {
-        m.forEach(model => require(`../${model}`));
+        m.forEach(model => require(model));
         
         db.on('error', console.error.bind(console, 'Error connecting to mongodb: '));
         db.once('open', console.log.bind(console, 'Database connected.'));
 
         mongoose.Promise = require('bluebird');
+      })
+      .catch(err => {
+        console.log('THE ERR: ', err); 
       });
   }
 };

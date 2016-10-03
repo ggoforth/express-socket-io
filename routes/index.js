@@ -1,6 +1,8 @@
 'use strict';
 
 const express = require('express'),
+  mongoose = require('mongoose'),
+  Order = mongoose.model('Order'),
   router = express.Router();
 
 /**
@@ -25,16 +27,23 @@ function getOrder(req, res) {
    * - emit newOrder with the details
    */
   let orderId = req.method.toLowerCase() === 'post' ? 
-    req.body.orderId : req.params.orderId;
+    req.body.orderId : req.params.orderId,
+    locationId = req.params.locationId;
 
-  console.log('here');
-
-  req.io.sockets
-    .in(req.params.locationId)
-    .emit('newOrder', {});
-
+  Order.find({locationId, _id: orderId})
+    .then(order => {
+      req.io
+        .sockets
+        .in(req.params.locationId)
+        .emit('newOrder', order);
+    })
+    .catch(err => {
+      next(err); 
+    });
+  
   res.sendStatus(200);
 }
+
 router.post('/:locationId/new-order', getOrder);
 router.get('/:locationId/new-order/:orderId', getOrder);
 
