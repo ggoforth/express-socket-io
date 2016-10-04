@@ -3,6 +3,7 @@
 const express = require('express'),
   mongoose = require('mongoose'),
   Order = mongoose.model('Order'),
+  sort = require(`${process.cwd()}/modules/seat-item-sort`),
   router = express.Router();
 
 /**
@@ -19,18 +20,13 @@ router.get('/:locationId', function (req, res) {
 /**
  * When a new order comes in.
  */
-function getOrder(req, res) {
-  /**
-   * TODO:
-   * - get the post body for the order id
-   * - use a model to look up the order details
-   * - emit newOrder with the details
-   */
+function getOrder(req, res, next) {
   let orderId = req.method.toLowerCase() === 'post' ? 
     req.body.orderId : req.params.orderId,
     location_id = req.params.locationId;
 
   Order.findOne({location_id, _id: orderId})
+    .then(sort)
     .then(order => {
       req.io
         .sockets

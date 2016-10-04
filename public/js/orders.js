@@ -22,6 +22,7 @@
    * the order object from the server.
    */
   socket.on('newOrder', function (order) {
+    debugger;
     Orders.storeOrder(order);
     
     _.each(Orders._orderNotification, function (func) {
@@ -32,10 +33,6 @@
   });
 
   window.Orders = {
-    print: function (order) {
-      
-    },
-    
     /**
      * Find the index of an order.
      *
