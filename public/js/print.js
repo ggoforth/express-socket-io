@@ -33,6 +33,27 @@
     //  alert(msg);
     }
 
+    trader.onReceive = function (response) {
+
+        var msg = '- onReceive -\n\n';
+        msg += 'TraderSuccess : [ ' + response.traderSuccess + ' ]\n';
+        msg += 'TraderStatus : [ ' + response.traderStatus + ',\n';
+
+        if (trader.isCoverOpen            ({traderStatus:response.traderStatus})) {msg += '\tCoverOpen,\n';}
+        if (trader.isOffLine              ({traderStatus:response.traderStatus})) {msg += '\tOffLine,\n';}
+        if (trader.isCompulsionSwitchClose({traderStatus:response.traderStatus})) {msg += '\tCompulsionSwitchClose,\n';}
+        if (trader.isEtbCommandExecute    ({traderStatus:response.traderStatus})) {msg += '\tEtbCommandExecute,\n';}
+        if (trader.isHighTemperatureStop  ({traderStatus:response.traderStatus})) {msg += '\tHighTemperatureStop,\n';}
+        if (trader.isNonRecoverableError  ({traderStatus:response.traderStatus})) {msg += '\tNonRecoverableError,\n';}
+        if (trader.isAutoCutterError      ({traderStatus:response.traderStatus})) {msg += '\tAutoCutterError,\n';}
+        if (trader.isBlackMarkError       ({traderStatus:response.traderStatus})) {msg += '\tBlackMarkError,\n';}
+        if (trader.isPaperEnd             ({traderStatus:response.traderStatus})) {msg += '\tPaperEnd,\n';}
+        if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n';}
+
+        msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus:response.traderStatus}).toString() + ' ]\n';
+        //alert(msg);
+    }
+
     trader.onError = function (response) {
       var msg = '- onError -\n\n';
       msg += '\tStatus:' + response.status + '\n';
@@ -44,8 +65,24 @@
     try {
       request += builder.createInitializationElement();
 
-      //Creates a line before each new Seat and the Seat Number
-      for(var i=0; i<order.seats.length; i++){
+    // Print user name at the top of receipt
+      seatValue = order.user_id.firstName + ' ' + order.user_id.lastName;
+      request = createRequestTextElement(request, seatValue);
+    // Print order name after user name
+       if(order.name !== ''){
+           request = createRequestTextElement(request, order.name);
+       }
+    // Print the time
+       let time = new Date();
+       let hours = time.getHours();
+       let ampm = hours > 12 ? ' PM' : ' AM';
+       hours = hours % 12;
+       hours = hours ? hours : 12;
+       let currentTime = hours + ':' + time.getMinutes() + ampm;
+       request = createRequestTextElement(request, currentTime);
+
+       //Creates a line before each new Seat and the Seat Number
+       for(var i=0; i<order.seats.length; i++){
         request += builder.createRuledLineElement({thickness: 'medium'});
         request = createRequestTextElement(request, 'Seat ' + (i + 1));
 
@@ -99,16 +136,6 @@
         }
       }
 
-      function capitalize(name){
-       name = name.split(' ');
-       for(var a=0; a<name.length; a++){
-         name[a] = name[a].charAt(0).toUpperCase()
-                 + name[a].substring(1, name[a].length).toLowerCase();
-       }
-       name = name.toString().replace(/,/g, ' ');
-       return name;
-      }
-
       request += '\n';
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
@@ -117,6 +144,16 @@
     }
     catch (e) {
       alert(e.message);
+    }
+
+    function capitalize(name){
+      name = name.split(' ');
+      for(var a=0; a<name.length; a++){
+        name[a] = name[a].charAt(0).toUpperCase()
+                + name[a].substring(1, name[a].length).toLowerCase();
+      }
+      name = name.toString().replace(/,/g, ' ');
+      return name;
     }
 
     function createRequestTextElement(request, seatValue){
@@ -136,7 +173,6 @@
       });
       return request;
     }
-
   }
 
   Orders.registerOrderNotification(print);
