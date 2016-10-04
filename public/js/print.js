@@ -2,7 +2,7 @@
 
   'use strict';
 
-  function print(butterfish) {
+  function print(order) {
     var builder = new StarWebPrintBuilder();
     var request = '';
     var seatValue = '';
@@ -46,46 +46,51 @@
     //  request += builder.createRuledLineElement({thickness: 'medium'});
     //  request += '\n';
 
-    //  var currentOrder = 'Order#: ' + butterfish.orderNo;
+    //  var currentOrder = 'Order#: ' + order.orderNo;
     //  request = createRequestTextElement(request, currentOrder);
 
-      for(var i=0; i<butterfish.seats.length; i++){
+      for(var i=0; i<order.seats.length; i++){
         request += builder.createRuledLineElement({thickness: 'medium'});
         request = createRequestTextElement(request, 'Seat ' + (i + 1));
 
-        for(var key in butterfish.seats[i]){
+        for(var key in order.seats[i]){
           if(key === 'double_protein'){
-            var double_protein = butterfish.seats[i].double_protein;
+            var double_protein = order.seats[i].double_protein;
             if(double_protein){
               request = createRequestTextElement(request, 'Double Protein');
             }
           }else{
             if(key === 'selected_items'){
+              var last = '';
               var storage = '';
-              for (var j=0; j<butterfish.seats[i].selected_items.length; j++) {
-                var cat = butterfish.seats[i].selected_items[j].category.name;
+              for (var j=0; j<order.seats[i].selected_items.length; j++) {
+                var cat = order.seats[i].selected_items[j].category.name;
                 if (storage !== cat) {
-                  request = createRequestTextElement(request, capitalize(butterfish.seats[i].selected_items[j].category.name) + ':');
-                  storage = butterfish.seats[i].selected_items[j].category.name;
+                  request = createRequestTextElement(request, capitalize(order.seats[i].selected_items[j].category.name) + ':');
+                  storage = order.seats[i].selected_items[j].category.name;
+                }
+                if (last == order.seats[i].selected_items[j].name){
+                  delete order.seats[i].selected_items[j].name;
                 }
 
                 var variation = '';
-                if (butterfish.seats[i].selected_items[j].category.name === 'beverages' ||
-                  butterfish.seats[i].selected_items[j].category.name === 'proteins' ||
-                  butterfish.seats[i].selected_items[j].category.name === 'signature_bowls')
-                    variation = butterfish.seats[i].selected_items[j].variation.name + ' ';
+                if (order.seats[i].selected_items[j].category.name === 'Beverages' ||
+                  order.seats[i].selected_items[j].category.name === 'Proteins' ||
+                  order.seats[i].selected_items[j].category.name === 'Signature Bowls')
+                    variation = order.seats[i].selected_items[j].variation.name + ' ';
 
                 var multiplier = '';
-                var group = _.groupBy(butterfish.seats[i].selected_items, 'name')
-                var quantity = group[butterfish.seats[i].selected_items[j].name].length;
+                var group = _.groupBy(order.seats[i].selected_items, 'name')
+                var quantity = group[order.seats[i].selected_items[j].name].length;
                 quantity === 1 ? multiplier = '' : multiplier = quantity.toString() + 'x ';
-
-                request = createRequestTextElement(request, '  ' + multiplier + capitalize(variation) + capitalize(butterfish.seats[i].selected_items[j].name));
+                if (order.seats[i].selected_items[j].name){
+                  last = order.seats[i].selected_items[j].name;
+                  request = createRequestTextElement(request, '  ' + multiplier + capitalize(variation) + capitalize(order.seats[i].selected_items[j].name));
+                }
               }
-            } else {
-              if(key === 'special_instructions'){
-                request = createRequestTextElement(request, 'Special Instructions: \n  ' + capitalize(butterfish.seats[i].special_instructions));
-              }
+            } else if (key === 'special_instructions'){
+                if (order.seats[i].special_instructions !== '')
+                  request = createRequestTextElement(request, 'Special Instructions: \n  ' + capitalize(order.seats[i].special_instructions));
             }
           }
         }
@@ -122,7 +127,7 @@
         invert: false,
         linespace: 32,
         width: 1,
-        height: 2,
+        height: 1,
         font: 'font_a',
         underline: false,
         data: seatValue.toString() +'\n'
