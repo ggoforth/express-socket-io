@@ -7,7 +7,7 @@
     var request = '';
     var seatValue = '';
 
-    var url = `http://${process.env.PRINTER_IP_ADDRESS}/StarWebPRNT/SendMessage`;
+    var url = `http://172.16.8.212/StarWebPRNT/SendMessage`;
     var papertype = 'normal';
 
     var trader = new StarWebPrintTrader({url:url, papertype:papertype});
