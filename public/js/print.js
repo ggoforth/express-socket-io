@@ -22,12 +22,6 @@
 
     try {
       request += builder.createInitializationElement();
-    //  request += builder.createRuledLineElement({thickness: 'medium'});
-    //  request += '\n';
-
-    //  var currentOrder = 'Order#: ' + order.orderNo;
-    //  request = createRequestTextElement(request, currentOrder);
-
     // Print user name at the top of receipt
       seatValue = order.user_id.firstName + ' ' + order.user_id.lastName;
       request = createRequestTextElement(request, seatValue);
