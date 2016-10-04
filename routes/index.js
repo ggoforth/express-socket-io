@@ -25,6 +25,8 @@ function getOrder(req, res, next) {
     location_id = req.params.locationId;
 
   Order.findOne({location_id, _id: orderId})
+    .populate('user_id')
+    .exec()
     .then(sort)
     .then(order => {
       req.io
