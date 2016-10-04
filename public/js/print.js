@@ -7,7 +7,7 @@
     var request = '';
     var seatValue = '';
 
-    var url = 'http://' + '172.16.8.212' + '/StarWebPRNT/SendMessage';
+    var url = `http://172.16.8.212/StarWebPRNT/SendMessage`;
     var papertype = 'normal';
 
     var trader = new StarWebPrintTrader({url:url, papertype:papertype});
@@ -30,7 +30,7 @@
       if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n';}
 
       msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus:response.traderStatus}).toString() + ' ]\n';
-      alert(msg);
+    //  alert(msg);
     }
 
     trader.onReceive = function (response) {
@@ -81,42 +81,50 @@
        let currentTime = hours + ':' + time.getMinutes() + ampm;
        request = createRequestTextElement(request, currentTime);
 
+       //Creates a line before each new Seat and the Seat Number
        for(var i=0; i<order.seats.length; i++){
         request += builder.createRuledLineElement({thickness: 'medium'});
         request = createRequestTextElement(request, 'Seat ' + (i + 1));
 
         for(var key in order.seats[i]){
-          if(key === 'double_protein'){
+          if (key === 'double_protein'){
             var double_protein = order.seats[i].double_protein;
-            if(double_protein){
+            if (double_protein){
               request = createRequestTextElement(request, 'Double Protein');
             }
-          }else{
-            if(key === 'selected_items'){
-              var last = '';
-              var storage = '';
+          } else {
+            if (key === 'selected_items'){
+              var lastItem = '';
+              var lastCategory = '';
               for (var j=0; j<order.seats[i].selected_items.length; j++) {
-                var cat = order.seats[i].selected_items[j].category.name;
-                if (storage !== cat) {
-                  request = createRequestTextElement(request, capitalize(order.seats[i].selected_items[j].category.name) + ':');
-                  storage = order.seats[i].selected_items[j].category.name;
+                var currentItem = order.seats[i].selected_items[j].name;
+                var currentCategory = order.seats[i].selected_items[j].category.name;
+
+                //If there are multiple items for one category, it will only print the category name once
+                if (lastCategory !== currentCategory) {
+                  request = createRequestTextElement(request, capitalize(currentCategory) + ':');
+                  lastCategory = currentCategory;
                 }
-                if (last == order.seats[i].selected_items[j].name){
+
+                //If the current item is a duplicate item, remove that item so it is not printed more than once
+                if (lastItem == currentItem){
                   delete order.seats[i].selected_items[j].name;
                 }
 
+                //Allows variations to be added to request to Beverages, Proteins, and Signature Bowls
                 var variation = '';
-                if (order.seats[i].selected_items[j].category.name === 'Beverages' ||
-                  order.seats[i].selected_items[j].category.name === 'Proteins' ||
-                  order.seats[i].selected_items[j].category.name === 'Signature Bowls')
+                if (currentCategory === 'Beverages' || currentCategory === 'Proteins' || currentCategory === 'Signature Bowls')
                     variation = order.seats[i].selected_items[j].variation.name + ' ';
 
+                //Allows multiple orders of an item to be printed once with a multiplier, i.e. 1x 2x 3x
                 var multiplier = '';
                 var group = _.groupBy(order.seats[i].selected_items, 'name')
                 var quantity = group[order.seats[i].selected_items[j].name].length;
                 quantity === 1 ? multiplier = '' : multiplier = quantity.toString() + 'x ';
+
+                //If the object exists, create a text element for that object and populate the 'lastItem' variable
                 if (order.seats[i].selected_items[j].name){
-                  last = order.seats[i].selected_items[j].name;
+                  lastItem = currentItem;
                   request = createRequestTextElement(request, '  ' + multiplier + capitalize(variation) + capitalize(order.seats[i].selected_items[j].name));
                 }
               }
@@ -129,7 +137,6 @@
       }
 
       request += '\n';
-      request += builder.createFeedElement({line: 2});
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
