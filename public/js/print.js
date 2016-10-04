@@ -12,27 +12,6 @@
 
     var trader = new StarWebPrintTrader({url:url, papertype:papertype});
 
-    /*trader.onReceive = function (response) {
-
-      var msg = '- onReceive -\n\n';
-      msg += 'TraderSuccess : [ ' + response.traderSuccess + ' ]\n';
-      msg += 'TraderStatus : [ ' + response.traderStatus + ',\n';
-
-      if (trader.isCoverOpen            ({traderStatus:response.traderStatus})) {msg += '\tCoverOpen,\n';}
-      if (trader.isOffLine              ({traderStatus:response.traderStatus})) {msg += '\tOffLine,\n';}
-      if (trader.isCompulsionSwitchClose({traderStatus:response.traderStatus})) {msg += '\tCompulsionSwitchClose,\n';}
-      if (trader.isEtbCommandExecute    ({traderStatus:response.traderStatus})) {msg += '\tEtbCommandExecute,\n';}
-      if (trader.isHighTemperatureStop  ({traderStatus:response.traderStatus})) {msg += '\tHighTemperatureStop,\n';}
-      if (trader.isNonRecoverableError  ({traderStatus:response.traderStatus})) {msg += '\tNonRecoverableError,\n';}
-      if (trader.isAutoCutterError      ({traderStatus:response.traderStatus})) {msg += '\tAutoCutterError,\n';}
-      if (trader.isBlackMarkError       ({traderStatus:response.traderStatus})) {msg += '\tBlackMarkError,\n';}
-      if (trader.isPaperEnd             ({traderStatus:response.traderStatus})) {msg += '\tPaperEnd,\n';}
-      if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n';}
-
-      msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus:response.traderStatus}).toString() + ' ]\n';
-      alert(msg);
-    }*/
-
     trader.onError = function (response) {
       var msg = '- onError -\n\n';
       msg += '\tStatus:' + response.status + '\n';
@@ -48,13 +27,17 @@
 
     //  var currentOrder = 'Order#: ' + order.orderNo;
     //  request = createRequestTextElement(request, currentOrder);
+
+    // Print user name at the top of receipt
       seatValue = order.user_id.firstName + ' ' + order.user_id.lastName;
       request = createRequestTextElement(request, seatValue);
 
+    // Print order name after user name
       if(order.name !== ''){
         request = createRequestTextElement(request, order.name);
       }
-      
+
+    // Print time
       let time = new Date();
       let hours = time.getHours();
       let ampm = hours > 12 ? ' PM' : ' AM';
@@ -109,7 +92,7 @@
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
-      //trader.sendMessage({request:request});
+      trader.sendMessage({request:request});
     }
     catch (e) {
       alert(e.message);
