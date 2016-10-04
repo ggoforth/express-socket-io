@@ -20,7 +20,7 @@
    */
   $window.on('resize layout-columns', function () {
     $orderColumns.find('.order-column')
-      .height($window.height() - orderColumnsOffset.top - 100);
+      .height($window.height() - orderColumnsOffset.top - 40);
   }).resize();
 
   /**

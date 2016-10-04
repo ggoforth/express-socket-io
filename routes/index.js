@@ -10,11 +10,10 @@ const express = require('express'),
  * Our main onscreen swimlanes.
  */
 router.get('/:locationId', function (req, res) {
-  const path = `${process.env.DOMAIN}:${process.env.PORT}`,
-    locationId = req.params.locationId,
+  const locationId = req.params.locationId,
     title = 'Butterfish Kiosk';
 
-  res.render('index', {title, path, locationId});
+  res.render('index', {title, locationId});
 });
 
 /**
