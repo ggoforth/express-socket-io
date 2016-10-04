@@ -56,14 +56,19 @@
       // Print the time
       let time = new Date();
       let hours = time.getHours();
-      let ampm = hours > 12 ? ' PM' : ' AM';
+      let minutes = time.getMinutes();
       hours = hours % 12;
       hours = hours ? hours : 12;
-      let currentTime = hours + ':' + time.getMinutes() + ampm;
+      let ampm = hours > 12 ? ' PM' : ' AM';
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      let currentTime = hours + ':' + minutes + ampm;
       request = createRequestTextElement(request, currentTime);
 
-      //Creates a line before each new Seat and the Seat Number
+      var lastItem = '';
+      var lastCategory = '';
+      //loop for each seat
       for(var i=0; i<order.seats.length; i++){
+        //Creates a line before each new Seat and the Seat Number
         request += builder.createRuledLineElement({thickness: 'medium'});
         request = createRequestTextElement(request, 'Seat ' + (i + 1));
 
@@ -73,13 +78,12 @@
             if (double_protein){
               request = createRequestTextElement(request, 'Double Protein');
             }
-          } else {
-            if (key === 'selected_items'){
-              var lastItem = '';
-              var lastCategory = '';
-              for (var j=0; j<order.seats[i].selected_items.length; j++) {
-                var currentItem = order.seats[i].selected_items[j].name;
-                var currentCategory = order.seats[i].selected_items[j].category.name;
+          } else if (key === 'sortedItems'){
+            //loop for each sorted item
+            for(var j=0; j<order.seats[i].sortedItems.length; j++){
+              for(var k=0; k<order.seats[i].sortedItems[j].items.length; k++){
+                var currentItem = order.seats[i].sortedItems[j].items[k].name;
+                var currentCategory = order.seats[i].sortedItems[j].name;
 
                 //If there are multiple items for one category, it will only print the category name once
                 if (lastCategory !== currentCategory) {
@@ -87,32 +91,29 @@
                   lastCategory = currentCategory;
                 }
 
-                //If the current item is a duplicate item, remove that item so it is not printed more than once
-                if (lastItem == currentItem){
-                  delete order.seats[i].selected_items[j].name;
-                }
-
                 //Allows variations to be added to request to Beverages, Proteins, and Signature Bowls
                 var variation = '';
-                if (currentCategory === 'Beverages' || currentCategory === 'Proteins' || currentCategory === 'Signature Bowls')
-                    variation = order.seats[i].selected_items[j].variation.name + ' ';
+                if (order.seats[i].sortedItems[j].name === 'Beverages' || order.seats[i].sortedItems[j].name === 'Proteins' || order.seats[i].sortedItems[j].name === 'Signature Bowls')
+                    variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
 
                 //Allows multiple orders of an item to be printed once with a multiplier, i.e. 1x 2x 3x
                 var multiplier = '';
-                var group = _.groupBy(order.seats[i].selected_items, 'name')
-                var quantity = group[order.seats[i].selected_items[j].name].length;
+                var group = _.groupBy(order.seats[i].sortedItems[j].items, 'name')
+                var quantity = group[order.seats[i].sortedItems[j].items[k].name].length;
                 quantity === 1 ? multiplier = '' : multiplier = quantity.toString() + 'x ';
 
-                //If the object exists, create a text element for that object and populate the 'lastItem' variable
-                if (order.seats[i].selected_items[j].name){
+                //If the current item is a duplicate item, remove that item so it is not printed more than once
+                if (lastItem == currentItem){
+                  delete order.seats[i].sortedItems[j].items[k].name;
+                }else{
                   lastItem = currentItem;
-                  request = createRequestTextElement(request, '  ' + multiplier + capitalize(variation) + capitalize(order.seats[i].selected_items[j].name));
+                  request = createRequestTextElement(request, '  ' + multiplier + variation + capitalize(order.seats[i].sortedItems[j].items[k].name));
                 }
               }
-            } else if (key === 'special_instructions'){
+            }
+          } else if (key === 'special_instructions'){
                 if (order.seats[i].special_instructions !== '')
                   request = createRequestTextElement(request, 'Special Instructions: \n  ' + capitalize(order.seats[i].special_instructions));
-            }
           }
         }
       }
