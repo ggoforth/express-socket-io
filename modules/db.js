@@ -10,6 +10,7 @@ const models = () => glob(`${modelsPath}/**/*.js`);
 
 module.exports = {
   init: () => {
+    console.log(`Connecting to ${process.env.MONGO_URI}`);
     mongoose.connect(process.env.MONGO_URI);
 
     let db = mongoose.connection;

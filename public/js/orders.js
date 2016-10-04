@@ -27,15 +27,9 @@
     _.each(Orders._orderNotification, function (func) {
       func(order);
     });
-    
-    Orders.print(order);
   });
 
   window.Orders = {
-    print: function (order) {
-      
-    },
-    
     /**
      * Find the index of an order.
      *
