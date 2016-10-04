@@ -89,3 +89,19 @@ header .date-time {
     display: inline-block;
     margin-right: 6px;
 }
+
+footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #8E898B;
+    height: 85px;
+}
+
+footer.actions i {
+    color: #FFB07B;
+    font-size: 50px;
+    margin: 15px 10px;
+    cursor: pointer;
+}
