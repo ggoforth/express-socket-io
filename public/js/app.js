@@ -12,6 +12,7 @@
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
     $currentOrderIndex = $('.current-order-index'),
+    $footer = $('footer'),
     $window = $(window),
     orderRendered = false;
 
@@ -22,7 +23,15 @@
     $orderColumns.find('.order-column')
       .height($window.height() - orderColumnsOffset.top - 125);
   }).resize();
+  
+  $footer.find('.previous').on('click', function () {
+    Orders.previous();
+  });
 
+  $footer.find('.next').on('click', function () {
+    Orders.next();
+  });
+  
   /**
    * Build out one seat for the order display.
    *

@@ -49,6 +49,37 @@
     },
 
     /**
+     * The current order shown on the screen.
+     */
+    currentOrderIndex: 0,
+
+    /**
+     * Go to the previous order.
+     */
+    previous: function () {
+      this.currentOrderIndex--;
+
+      if (this.currentOrderIndex < 0) this.currentOrderIndex = 0;
+
+      var order = this.getOrderByIndex(this.currentOrderIndex);
+      window.clearOrder();
+      window.renderOrder(order, true);
+    },
+
+    /**
+     * Go to the next order.
+     */
+    next: function () {
+      this.currentOrderIndex++;
+
+      if (this.currentOrderIndex > this.numOrders() - 1) this.currentOrderIndex = this.numOrders() - 1;
+
+      var order = this.getOrderByIndex(this.currentOrderIndex);
+      window.clearOrder();
+      window.renderOrder(order, true);
+    },
+    
+    /**
      * Array of functions that want to be notified when a new
      * order comes in.
      */

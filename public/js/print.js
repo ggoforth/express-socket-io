@@ -10,7 +10,7 @@
     var url = `http://172.16.8.212/StarWebPRNT/SendMessage`;
     var papertype = 'normal';
 
-    var trader = new StarWebPrintTrader({url:url, papertype:papertype});
+    var trader = new StarWebPrintTrader({url: url, papertype: papertype});
 
     trader.onReceive = function (response) {
 
@@ -18,19 +18,39 @@
       msg += 'TraderSuccess : [ ' + response.traderSuccess + ' ]\n';
       msg += 'TraderStatus : [ ' + response.traderStatus + ',\n';
 
-      if (trader.isCoverOpen            ({traderStatus:response.traderStatus})) {msg += '\tCoverOpen,\n';}
-      if (trader.isOffLine              ({traderStatus:response.traderStatus})) {msg += '\tOffLine,\n';}
-      if (trader.isCompulsionSwitchClose({traderStatus:response.traderStatus})) {msg += '\tCompulsionSwitchClose,\n';}
-      if (trader.isEtbCommandExecute    ({traderStatus:response.traderStatus})) {msg += '\tEtbCommandExecute,\n';}
-      if (trader.isHighTemperatureStop  ({traderStatus:response.traderStatus})) {msg += '\tHighTemperatureStop,\n';}
-      if (trader.isNonRecoverableError  ({traderStatus:response.traderStatus})) {msg += '\tNonRecoverableError,\n';}
-      if (trader.isAutoCutterError      ({traderStatus:response.traderStatus})) {msg += '\tAutoCutterError,\n';}
-      if (trader.isBlackMarkError       ({traderStatus:response.traderStatus})) {msg += '\tBlackMarkError,\n';}
-      if (trader.isPaperEnd             ({traderStatus:response.traderStatus})) {msg += '\tPaperEnd,\n';}
-      if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n';}
+      if (trader.isCoverOpen({traderStatus: response.traderStatus})) {
+        msg += '\tCoverOpen,\n';
+      }
+      if (trader.isOffLine({traderStatus: response.traderStatus})) {
+        msg += '\tOffLine,\n';
+      }
+      if (trader.isCompulsionSwitchClose({traderStatus: response.traderStatus})) {
+        msg += '\tCompulsionSwitchClose,\n';
+      }
+      if (trader.isEtbCommandExecute({traderStatus: response.traderStatus})) {
+        msg += '\tEtbCommandExecute,\n';
+      }
+      if (trader.isHighTemperatureStop({traderStatus: response.traderStatus})) {
+        msg += '\tHighTemperatureStop,\n';
+      }
+      if (trader.isNonRecoverableError({traderStatus: response.traderStatus})) {
+        msg += '\tNonRecoverableError,\n';
+      }
+      if (trader.isAutoCutterError({traderStatus: response.traderStatus})) {
+        msg += '\tAutoCutterError,\n';
+      }
+      if (trader.isBlackMarkError({traderStatus: response.traderStatus})) {
+        msg += '\tBlackMarkError,\n';
+      }
+      if (trader.isPaperEnd({traderStatus: response.traderStatus})) {
+        msg += '\tPaperEnd,\n';
+      }
+      if (trader.isPaperNearEnd({traderStatus: response.traderStatus})) {
+        msg += '\tPaperNearEnd,\n';
+      }
 
-      msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus:response.traderStatus}).toString() + ' ]\n';
-    //  alert(msg);
+      msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus: response.traderStatus}).toString() + ' ]\n';
+      //  alert(msg);
     }
 
     trader.onError = function (response) {
@@ -38,8 +58,8 @@
       msg += '\tStatus:' + response.status + '\n';
       msg += '\tResponseText:' + response.responseText;
 
-      alert(msg);
-    }
+      // alert(msg);
+    };
 
     try {
       request += builder.createInitializationElement();
@@ -49,8 +69,8 @@
       request = createRequestTextElement(request, seatValue);
 
       // Print order name after user name
-      if(order.name !== ''){
-         request = createRequestTextElement(request, order.name);
+      if (order.name !== '') {
+        request = createRequestTextElement(request, order.name);
       }
 
       // Print the time
@@ -60,28 +80,28 @@
       hours = hours % 12;
       hours = hours ? hours : 12;
       let ampm = hours > 12 ? ' PM' : ' AM';
-      minutes = minutes < 10 ? '0'+minutes : minutes;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
       let currentTime = hours + ':' + minutes + ampm;
       request = createRequestTextElement(request, currentTime);
 
       var lastItem = '';
       var lastCategory = '';
       //loop for each seat
-      for(var i=0; i<order.seats.length; i++){
+      for (var i = 0; i < order.seats.length; i++) {
         //Creates a line before each new Seat and the Seat Number
         request += builder.createRuledLineElement({thickness: 'medium'});
         request = createRequestTextElement(request, 'Seat ' + (i + 1));
 
-        for(var key in order.seats[i]){
-          if (key === 'double_protein'){
+        for (var key in order.seats[i]) {
+          if (key === 'double_protein') {
             var double_protein = order.seats[i].double_protein;
-            if (double_protein){
+            if (double_protein) {
               request = createRequestTextElement(request, 'Double Protein');
             }
-          } else if (key === 'sortedItems'){
+          } else if (key === 'sortedItems') {
             //loop for each sorted item
-            for(var j=0; j<order.seats[i].sortedItems.length; j++){
-              for(var k=0; k<order.seats[i].sortedItems[j].items.length; k++){
+            for (var j = 0; j < order.seats[i].sortedItems.length; j++) {
+              for (var k = 0; k < order.seats[i].sortedItems[j].items.length; k++) {
                 var currentItem = order.seats[i].sortedItems[j].items[k].name;
                 var currentCategory = order.seats[i].sortedItems[j].name;
 
@@ -94,7 +114,7 @@
                 //Allows variations to be added to request to Beverages, Proteins, and Signature Bowls
                 var variation = '';
                 if (order.seats[i].sortedItems[j].name === 'Beverages' || order.seats[i].sortedItems[j].name === 'Proteins' || order.seats[i].sortedItems[j].name === 'Signature Bowls')
-                    variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
+                  variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
 
                 //Allows multiple orders of an item to be printed once with a multiplier, i.e. 1x 2x 3x
                 var multiplier = '';
@@ -103,17 +123,17 @@
                 quantity === 1 ? multiplier = '' : multiplier = quantity.toString() + 'x ';
 
                 //If the current item is a duplicate item, remove that item so it is not printed more than once
-                if (lastItem == currentItem){
+                if (lastItem == currentItem) {
                   delete order.seats[i].sortedItems[j].items[k].name;
-                }else{
+                } else {
                   lastItem = currentItem;
                   request = createRequestTextElement(request, '  ' + multiplier + variation + capitalize(order.seats[i].sortedItems[j].items[k].name));
                 }
               }
             }
-          } else if (key === 'special_instructions'){
-                if (order.seats[i].special_instructions !== '')
-                  request = createRequestTextElement(request, 'Special Instructions: \n  ' + capitalize(order.seats[i].special_instructions));
+          } else if (key === 'special_instructions') {
+            if (order.seats[i].special_instructions !== '')
+              request = createRequestTextElement(request, 'Special Instructions: \n  ' + capitalize(order.seats[i].special_instructions));
           }
         }
       }
@@ -121,23 +141,23 @@
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
-      trader.sendMessage({request:request});
+      trader.sendMessage({request: request});
     }
     catch (e) {
       alert(e.message);
     }
 
-    function capitalize(name){
+    function capitalize(name) {
       name = name.split(' ');
-      for(var a=0; a<name.length; a++){
+      for (var a = 0; a < name.length; a++) {
         name[a] = name[a].charAt(0).toUpperCase()
-                + name[a].substring(1, name[a].length).toLowerCase();
+          + name[a].substring(1, name[a].length).toLowerCase();
       }
       name = name.toString().replace(/,/g, ' ');
       return name;
     }
 
-    function createRequestTextElement(request, seatValue){
+    function createRequestTextElement(request, seatValue) {
       console.log(seatValue);
       request += builder.createTextElement({
         codepage: 'cp998',
@@ -150,7 +170,7 @@
         height: 1,
         font: 'font_a',
         underline: false,
-        data: seatValue.toString() +'\n'
+        data: seatValue.toString() + '\n'
       });
       return request;
     }

@@ -105,3 +105,15 @@ footer.actions i {
     margin: 15px 10px;
     cursor: pointer;
 }
+
+footer.actions button.complete-order {
+    background-color: #FFB07B;
+    border: none;
+    height: 50px;
+    margin-top: 20px;
+}
+
+
+
+
+
