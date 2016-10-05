@@ -23,15 +23,37 @@
     $orderColumns.find('.order-column')
       .height($window.height() - orderColumnsOffset.top - 125);
   }).resize();
-  
+
+  /**
+   * When we click on the previous icon.
+   */
   $footer.find('.previous').on('click', function () {
     Orders.previous();
   });
 
+  /**
+   * When we click on the next icon.
+   */
   $footer.find('.next').on('click', function () {
     Orders.next();
   });
-  
+
+  /**
+   * Find a bowl size based on the selected items.
+   * 
+   * @param seat
+   * @returns {*}
+   */
+  function findBowlSize(seat) {
+    var items = seat.selected_items,
+      signatureBowl = _.find(items, {category: {name: 'Signature Bowls'}}),
+      protein = _.find(items, {category: {name: 'Proteins'}});
+   
+    if (signatureBowl) return signatureBowl.variation.name;
+    if (protein) return protein.variation.name;
+    return '';
+  }
+
   /**
    * Build out one seat for the order display.
    *
@@ -41,7 +63,7 @@
   function buildSeatHTML(seat) {
     var $cont = $('<div></div>'),
       $seat = $('<ul></ul>').addClass('seat'),
-      $order = $('<li>' + _.capitalize(seat.bowl_size) + ' Bowl</li>'),
+      $order = $('<li>' + _.capitalize(findBowlSize(seat)) + ' Bowl</li>'),
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
     
