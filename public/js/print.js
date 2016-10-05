@@ -13,32 +13,33 @@
     var trader = new StarWebPrintTrader({url:url, papertype:papertype});
 
     trader.onReceive = function (response) {
-
       var msg = '- onReceive -\n\n';
       msg += 'TraderSuccess : [ ' + response.traderSuccess + ' ]\n';
       msg += 'TraderStatus : [ ' + response.traderStatus + ',\n';
 
-      if (trader.isCoverOpen            ({traderStatus:response.traderStatus})) {msg += '\tCoverOpen,\n';}
-      if (trader.isOffLine              ({traderStatus:response.traderStatus})) {msg += '\tOffLine,\n';}
-      if (trader.isCompulsionSwitchClose({traderStatus:response.traderStatus})) {msg += '\tCompulsionSwitchClose,\n';}
-      if (trader.isEtbCommandExecute    ({traderStatus:response.traderStatus})) {msg += '\tEtbCommandExecute,\n';}
-      if (trader.isHighTemperatureStop  ({traderStatus:response.traderStatus})) {msg += '\tHighTemperatureStop,\n';}
-      if (trader.isNonRecoverableError  ({traderStatus:response.traderStatus})) {msg += '\tNonRecoverableError,\n';}
-      if (trader.isAutoCutterError      ({traderStatus:response.traderStatus})) {msg += '\tAutoCutterError,\n';}
-      if (trader.isBlackMarkError       ({traderStatus:response.traderStatus})) {msg += '\tBlackMarkError,\n';}
-      if (trader.isPaperEnd             ({traderStatus:response.traderStatus})) {msg += '\tPaperEnd,\n';}
-      if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n';}
+      if (trader.isCoverOpen            ({traderStatus:response.traderStatus})) {msg += '\tCoverOpen,\n'; alert('Printer Cover is Open');}
+      if (trader.isOffLine              ({traderStatus:response.traderStatus})) {msg += '\tOffLine,\n'; alert('Printer is Offline');}
+      if (trader.isEtbCommandExecute    ({traderStatus:response.traderStatus})) {msg += '\tEtbCommandExecute,\n'; alert('ETB Command Executed');}
+      if (trader.isHighTemperatureStop  ({traderStatus:response.traderStatus})) {msg += '\tHighTemperatureStop,\n'; alert('Stopped by high head temperature');}
+      if (trader.isNonRecoverableError  ({traderStatus:response.traderStatus})) {msg += '\tNonRecoverableError,\n'; alert('Non recoverable error');}
+      if (trader.isAutoCutterError      ({traderStatus:response.traderStatus})) {msg += '\tAutoCutterError,\n'; alert('Auto-cutter error');}
+      if (trader.isBlackMarkError       ({traderStatus:response.traderStatus})) {msg += '\tBlackMarkError,\n'; alert('Black Mark error');}
+      if (trader.isPaperEnd             ({traderStatus:response.traderStatus})) {msg += '\tPaperEnd,\n'; alert('Paper End');}
+      if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n'; alert('Paper near end');}
 
       msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus:response.traderStatus}).toString() + ' ]\n';
-    //  alert(msg);
+      console.log(msg);
     }
 
     trader.onError = function (response) {
-      var msg = '- onError -\n\n';
-      msg += '\tStatus:' + response.status + '\n';
-      msg += '\tResponseText:' + response.responseText;
-
-      alert(msg);
+      if(response.responseText === '' || response.responseText == 'undefined'){
+        alert('Printer is not connected');
+      }else{
+        var msg = '- onError -\n\n';
+        msg += '\tStatus:' + response.status + '\n';
+        msg += '\tResponseText:' + response.responseText;
+        alert(msg);
+      }
     }
 
     try {
@@ -48,8 +49,8 @@
       seatValue = order.user_id.firstName + ' ' + order.user_id.lastName;
       request = createRequestTextElement(request, seatValue);
 
-      // Print order name after user name
-      if(order.name !== ''){
+      // Print order name only if its not equal User first name
+      if(order.name !== '' && order.name !== order.user_id.firstName){
          request = createRequestTextElement(request, order.name);
       }
 
@@ -57,7 +58,7 @@
       let time = new Date();
       let hours = time.getHours();
       let minutes = time.getMinutes();
-      let ampm = hours > 12 ? ' PM' : ' AM';
+      let ampm = hours > 11 ? ' PM' : ' AM';
       hours = hours % 12;
       hours = hours ? hours : 12;
       minutes = minutes < 10 ? '0'+minutes : minutes;
@@ -138,7 +139,6 @@
     }
 
     function createRequestTextElement(request, seatValue){
-      console.log(seatValue);
       request += builder.createTextElement({
         codepage: 'cp998',
         international: 'usa',
