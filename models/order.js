@@ -1,8 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-  _ = require('lodash'),
-  MenuItem = mongoose.model('MenuItem');
+  _ = require('lodash');
 
 /**
  * Our Order Schema
