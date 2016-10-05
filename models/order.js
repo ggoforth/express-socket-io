@@ -12,6 +12,7 @@ let OrderSchema = new mongoose.Schema({
     amount: {type: String, required: true},
     dollars: {type: String, required: true}
   },
+  completed: {type: Date, default: null},
   created_at: {type: Date, default: Date.now},
   square_transaction: {type: mongoose.Schema.Types.Mixed, required: false},
   user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},

@@ -96,21 +96,21 @@ footer {
     right: 0;
     bottom: 0;
     border-top: 1px solid #8E898B;
-    height: 85px;
+    height: 75px;
+    padding-top: 12px;
 }
 
 footer.actions i {
     color: #FFB07B;
     font-size: 50px;
-    margin: 15px 10px;
     cursor: pointer;
+    margin: 0 15px;
 }
 
 footer.actions button.complete-order {
     background-color: #FFB07B;
     border: none;
     height: 50px;
-    margin-top: 20px;
 }
 
 

@@ -144,7 +144,7 @@
       trader.sendMessage({request: request});
     }
     catch (e) {
-      alert(e.message);
+      // alert(e.message);
     }
 
     function capitalize(name) {
