@@ -38,7 +38,10 @@
   $footer.find('.next').on('click', function () {
     Orders.next();
   });
-  
+
+  /**
+   * Complete an order.
+   */
   $footer.find('.complete-order').on('click', function () {
     if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
     var order = Orders.getCurrentOrder();
@@ -85,7 +88,7 @@
   function buildSeatHTML(seat) {
     var $cont = $('<div></div>'),
       $seat = $('<ul></ul>').addClass('seat'),
-      $order = $('<li>' + _.capitalize(findBowlSize(seat)) + ' Bowl</li>'),
+      $order = $('<li><div class="bowl-size"><div class="bowl-size-inner">' + _.capitalize(findBowlSize(seat).slice(0, 1)) + '</div></div></li>'),
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
     

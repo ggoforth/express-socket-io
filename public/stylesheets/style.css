@@ -45,6 +45,25 @@ header .date-time {
     padding: 0;
 }
 
+.order-column ul.seat .bowl-size {
+    margin: 0 auto 20px;
+    width: 70px;
+    height: 70px;
+    border: 6px solid #FFB07B;
+    border-radius: 35px;
+    position: relative;
+    text-align: center;
+    font-size: 2.3em;
+    background-color: #FFFFFF;
+    color: #2B2628;
+}
+
+.order-column ul.seat .bowl-size .bowl-size-inner {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .order-column ul.seat ul.items {
     list-style-type: none;
     margin: 10px 0 0 0;
@@ -57,7 +76,7 @@ header .date-time {
 
 .order-column ul.seat ul.items ul.step-items {
     list-style-type: none;
-    margin: 10px 0 15px 0;
+    margin: 3px 0 25px 0;
     padding: 0;
 }
 
