@@ -3,8 +3,8 @@
   'use strict';
 
   function print(order) {
-    //if (window.printerIp) return;
-    console.log(window.printerIp);
+    if (window.printerIp) return;
+    //console.log(window.printerIp);
 
     var builder = new StarWebPrintBuilder();
     var request = '';
@@ -76,8 +76,6 @@
         request += builder.createRuledLineElement({thickness: 'medium'});
         request = createRequestTextElement(request, 'Plate ' + (i + 1));
 
-        //request = createRequestTextElement(request, _.findBowlSize(order.seat[i]) + ' Bowl');
-
         for(var key in order.seats[i]){
           if (key === 'double_protein'){
             var double_protein = order.seats[i].double_protein;
@@ -127,7 +125,7 @@
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
-      //trader.sendMessage({request:request});
+      trader.sendMessage({request:request});
     }
     catch (e) {
       alert(e.message);
