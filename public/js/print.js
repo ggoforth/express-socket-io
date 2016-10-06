@@ -104,14 +104,14 @@
       }
 
       // Print the time
-      let time = new Date();
-      let hours = time.getHours();
-      let minutes = time.getMinutes();
+      var time = new Date();
+      var hours = time.getHours();
+      var minutes = time.getMinutes();
       hours = hours % 12;
       hours = hours ? hours : 12;
-      let ampm = hours > 12 ? ' PM' : ' AM';
+      var ampm = hours > 12 ? ' PM' : ' AM';
       minutes = minutes < 10 ? '0' + minutes : minutes;
-      let currentTime = hours + ':' + minutes + ampm;
+      var currentTime = hours + ':' + minutes + ampm;
       request = createRequestTextElement(request, currentTime);
 
       var lastItem = '';
