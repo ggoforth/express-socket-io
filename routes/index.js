@@ -2,7 +2,9 @@
 
 const express = require('express'),
   mongoose = require('mongoose'),
+  _ = require('lodash'),
   Order = mongoose.model('Order'),
+  moment = require('moment'),
   sort = require(`${process.cwd()}/modules/seat-item-sort`),
   router = express.Router();
 
@@ -14,6 +16,23 @@ router.get('/:locationId', function (req, res) {
     title = 'Butterfish Kiosk';
 
   res.render('index', {title, locationId});
+});
+
+/**
+ * Get orders for a location
+ */
+router.get('/:locationId/orders', function (req, res, next) {
+  Order.find({
+    location_id: req.params.locationId,
+    completed: null, // not yet complete
+    created_at: {$gte: moment().startOf('day').toDate()} // placed today
+  })
+    .populate('user_id')
+    .exec()
+    .then(orders => _.map(orders, sort))
+    .then(orders => {
+      res.json(orders);
+    });
 });
 
 /**

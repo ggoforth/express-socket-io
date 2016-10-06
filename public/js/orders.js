@@ -23,13 +23,13 @@
    */
   socket.on('newOrder', function (order) {
     Orders.storeOrder(order);
-    Orders.runOrderNotifications(order); 
+    Orders.runOrderNotifications(order);
   });
 
   window.Orders = {
     /**
      * Run all the other notifications.
-     * 
+     *
      * @param order
      */
     runOrderNotifications: function (order) {
@@ -37,7 +37,7 @@
         func(order);
       });
     },
-    
+
     /**
      * Find the index of an order.
      *
@@ -63,7 +63,7 @@
 
     /**
      * Returns the current order object.
-     * 
+     *
      * @returns {*|null}
      */
     getCurrentOrder: function () {
@@ -77,7 +77,7 @@
       _.remove(orders, this.getOrderByIndex(this.currentOrderIndex));
       this.currentOrderIndex = Math.max(--this.currentOrderIndex, 0);
       var nextOrder = this.getOrderByIndex(this.currentOrderIndex);
-      this.runOrderNotifications(nextOrder, true);
+      if (nextOrder) this.runOrderNotifications(nextOrder, true);
     },
 
     /**
@@ -105,7 +105,7 @@
       window.clearOrder();
       window.renderOrder(order, true);
     },
-    
+
     /**
      * Array of functions that want to be notified when a new
      * order comes in.
@@ -130,7 +130,6 @@
      */
     storeOrder: function (order) {
       orders.push(order);
-      console.log(orders);
       return order;
     },
 
@@ -141,6 +140,49 @@
      */
     numOrders: function () {
       return orders.length;
+    },
+
+    /**
+     * Execute a series of calls to the printer, in order,
+     * so as to not overwhelm the printer with to many 
+     * responses at one time.
+     * 
+     * @param orders
+     */
+    executeSyncPrint: function (orders) {
+      if (!orders.length) return;
+    
+      // Map orders to functions that can be called in a series.
+      orders = _.map(orders, function (order) {
+        return function (callback) {
+          window.printOrder(order, true, callback);  
+        };
+      });
+     
+      //run the series.
+      async.series(orders);
+    },
+
+    /**
+     * Get the kiosk orders when the page loads.
+     */
+    getInitialOrders: function () {
+      var me = this,
+        getOrders = $.ajax({
+          url: '/' + window.locationId + '/orders',
+          type: 'GET'
+        });
+
+      return getOrders.then(function (_orders) {
+        orders = _orders;
+        
+        if (orders.length) {
+          window.disablePrint();
+          me.runOrderNotifications(orders[0], true);
+          window.enablePrint();
+          me.executeSyncPrint(orders);
+        }
+      });
     }
   };
 }());

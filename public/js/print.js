@@ -2,7 +2,33 @@
 
   'use strict';
 
-  function print(order) {
+  var printDisabled = false;
+
+  /**
+   * Disable printing.
+   */
+  window.disablePrint = function () {
+    printDisabled = true;
+  };
+
+  /**
+   * Enable printing.
+   */
+  window.enablePrint = function () {
+    printDisabled = false;
+  };
+
+  /**
+   * Print an order.
+   * 
+   * @param order
+   * @param forcePrint
+   * @param callback
+   */
+  var printOrder = function print(order, forcePrint, callback) {
+    if (printDisabled) return;
+    if (order.printed && !forcePrint) return;
+    
     var builder = new StarWebPrintBuilder();
     var request = '';
     var seatValue = '';
@@ -50,19 +76,23 @@
       }
 
       msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus: response.traderStatus}).toString() + ' ]\n';
-      //  alert(msg);
-    }
+
+      //TODO: how to handle msg
+      order.printed = true;
+      
+      if (callback && _.isFunction(callback)) callback();
+    };
 
     trader.onError = function (response) {
       var msg = '- onError -\n\n';
       msg += '\tStatus:' + response.status + '\n';
       msg += '\tResponseText:' + response.responseText;
 
-      // alert(msg);
+      alert(msg);
     };
 
     try {
-      request += builder.createInitializationElement();
+      request += builder.createInitializationElement({print: true});
 
       // Print user name at the top of receipt
       seatValue = order.user_id.firstName + ' ' + order.user_id.lastName;
@@ -174,7 +204,8 @@
       });
       return request;
     }
-  }
-
-  Orders.registerOrderNotification(print);
+  };
+  
+  window.printOrder = printOrder;
+  Orders.registerOrderNotification(printOrder);
 }());
