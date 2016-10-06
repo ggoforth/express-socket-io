@@ -23,46 +23,48 @@ header .date-time {
     font-weight: 200;
 }
 
-.modal{
-  padding-top: 90px;
+.modal {
+    padding-top: 90px;
 }
 
-.modal-content{
-  background-color: #FFB07B;
+.modal-content {
 }
 
-.modal-dialog{
-  max-width:200px;
-  padding-top:10px;
-  background-color: inherit;
+.modal-dialog {
+    max-width: 400px;
+    padding-top: 10px;
+    background-color: inherit;
 }
 
-.modal-title{
-  color:#2B2628;
-  text-align:center;
+.modal-title {
+    color: #2B2628;
 }
 
-.printerSettings{
-  height: 30px;
-  width: 30px;
-  display: block;
-  font-size: 1.4em;
+.printerSettings {
+    height: 30px;
+    width: 30px;
+    display: block;
+    font-size: 1.4em;
 }
 
-.save{
-  background-color: #2B2628;
-  color: white;
-  text-align: center;
-  box-shadow: none;
-  border: 0px solid transparent;
-  border-radius: 5px;
-  padding: 5px;
-  display: inline-block;
+.settings-modal {
+    text-align: left;
 }
 
-.save:hover{
-  background-color: white;
-  color: #2B2628;
+.save {
+    background-color: #FFB07B;
+    color: white;
+    text-align: center;
+    box-shadow: none;
+    border: 0px solid transparent;
+    border-radius: 5px;
+    padding: 5px;
+    display: inline-block;
+}
+
+.save:hover {
+    color: #FFFFFF;
+    background-color: #FFB07B;
 }
 
 .order-columns {
