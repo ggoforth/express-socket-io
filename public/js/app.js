@@ -159,6 +159,7 @@
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1); 
     
+    
     $orderHeader.html(orderHeaderContent);
     
     if (order) {
