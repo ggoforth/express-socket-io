@@ -9,6 +9,7 @@
    * @type {*|HTMLElement}
    */
   var $orderColumns = $('.order-columns'),
+    PRINTERIP = 'butterfish-printerIp',
     $body = $('body'),
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
@@ -26,19 +27,20 @@
       .height($window.height() - orderColumnsOffset.top - 115);
   }).resize();
 
-   /**
-    * When we click on Save Changes on modal
-    */
-  $header.find('.save').on('click', function(){
+  /**
+   * When we click on Save Changes on modal
+   */
+  $header.find('.save').on('click', function () {
     window.printerIp = $(".printerIp").val();
+    window.localStorage.setItem(PRINTERIP, window.printerIp);
     $('#myModal').modal('toggle');
   });
 
-    /**
-     * When we hit enter on printer IP modal
-     */
-   $header.find('.printerIp').on('keydown', function(e){
-    if(e.keyCode === 13){
+  /**
+   * When we hit enter on printer IP modal
+   */
+  $header.find('.printerIp').on('keydown', function (e) {
+    if (e.keyCode === 13) {
       window.printerIp = $(".printerIp").val();
       $('#myModal').modal('hide');
     }
@@ -65,7 +67,7 @@
     if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
     var order = Orders.getCurrentOrder();
     if (!order) return;
-   
+
     var markCompleted = $.ajax({
       url: '/' + window.locationId + '/complete-order/' + order._id,
       type: 'GET'
@@ -211,6 +213,11 @@
    */
   Orders.registerOrderNotification(renderOrder);
 
+  /**
+   * Setup the networked printer ip.
+   */
+  window.printerIp = localStorage.getItem(PRINTERIP);
+  
   /**
    * Get the initial orders and render them on the screen,
    * as well as printing.
