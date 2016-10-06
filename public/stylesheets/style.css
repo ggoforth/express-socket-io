@@ -17,6 +17,48 @@ header .date-time {
     font-weight: 200;
 }
 
+.modal{
+  padding-top: 90px;
+}
+
+.modal-content{
+  background-color: #FFB07B;
+}
+
+.modal-dialog{
+  max-width:200px;
+  padding-top:10px;
+  background-color: inherit;
+}
+
+.modal-title{
+  color:#2B2628;
+  text-align:center;
+}
+
+.printerSettings{
+  height: 30px;
+  width: 30px;
+  display: block;
+  font-size: 1.4em;
+}
+
+.save{
+  background-color: #2B2628;
+  color: white;
+  text-align: center;
+  box-shadow: none;
+  border: 0px solid transparent;
+  border-radius: 5px;
+  padding: 5px;
+  display: inline-block;
+}
+
+.save:hover{
+  background-color: white;
+  color: #2B2628;
+}
+
 .order-columns {
     color: #FFFFFF;
     margin-top: 0;
@@ -96,12 +138,19 @@ footer {
     right: 0;
     bottom: 0;
     border-top: 1px solid #8E898B;
-    height: 85px;
+    height: 75px;
+    padding-top: 12px;
 }
 
 footer.actions i {
     color: #FFB07B;
     font-size: 50px;
-    margin: 15px 10px;
     cursor: pointer;
+    margin: 0 15px;
+}
+
+footer.actions button.complete-order {
+    background-color: #FFB07B;
+    border: none;
+    height: 50px;
 }

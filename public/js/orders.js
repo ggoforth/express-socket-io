@@ -23,13 +23,21 @@
    */
   socket.on('newOrder', function (order) {
     Orders.storeOrder(order);
-    
-    _.each(Orders._orderNotification, function (func) {
-      func(order);
-    });
+    Orders.runOrderNotifications(order); 
   });
 
   window.Orders = {
+    /**
+     * Run all the other notifications.
+     * 
+     * @param order
+     */
+    runOrderNotifications: function (order) {
+      _.each(this._orderNotification, function (func) {
+        func(order);
+      });
+    },
+    
     /**
      * Find the index of an order.
      *
@@ -48,6 +56,56 @@
       return orders[index] ? orders[index] : null;
     },
 
+    /**
+     * The current order shown on the screen.
+     */
+    currentOrderIndex: 0,
+
+    /**
+     * Returns the current order object.
+     * 
+     * @returns {*|null}
+     */
+    getCurrentOrder: function () {
+      return this.getOrderByIndex(this.currentOrderIndex);
+    },
+
+    /**
+     * Remove the current order form the screen.
+     */
+    removeCurrentOrder: function () {
+      _.remove(orders, this.getOrderByIndex(this.currentOrderIndex));
+      this.currentOrderIndex = Math.max(--this.currentOrderIndex, 0);
+      var nextOrder = this.getOrderByIndex(this.currentOrderIndex);
+      this.runOrderNotifications(nextOrder, true);
+    },
+
+    /**
+     * Go to the previous order.
+     */
+    previous: function () {
+      this.currentOrderIndex--;
+
+      if (this.currentOrderIndex < 0) this.currentOrderIndex = 0;
+
+      var order = this.getOrderByIndex(this.currentOrderIndex);
+      window.clearOrder();
+      window.renderOrder(order, true);
+    },
+
+    /**
+     * Go to the next order.
+     */
+    next: function () {
+      this.currentOrderIndex++;
+
+      if (this.currentOrderIndex > this.numOrders() - 1) this.currentOrderIndex = this.numOrders() - 1;
+
+      var order = this.getOrderByIndex(this.currentOrderIndex);
+      window.clearOrder();
+      window.renderOrder(order, true);
+    },
+    
     /**
      * Array of functions that want to be notified when a new
      * order comes in.

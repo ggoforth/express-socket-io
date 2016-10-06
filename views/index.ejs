@@ -31,7 +31,35 @@
                 <span class="num-orders">0</span>
             </span>
 
-            <div class="date-time pull-right"></div>
+              <div class="printer pull-right">
+                <i class="pull-right printerSettings fa fa-gear"
+                   style="color: #FFFFFF; padding:0;"
+                   data-toggle="modal" data-target="#myModal"
+                   onclick="document.getElementById('printerIp').select()"></i>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Printer IP Address</h4>
+                      </div>
+                      <div class="modal-body">
+                        <input id="printerIp" class="printerIp" placeholder="Enter IP Address" autofocus="autofocus"/>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="save btn-primary">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="date-time pull-right"></div>
+            </div>
         </div>
     </header>
 
@@ -44,8 +72,8 @@
 
 <footer class="actions text-center">
     <button class="btn btn-lg btn-default complete-order">Order Complete</button>
-    <i class="fa fa-chevron-circle-left pull-left"></i>
-    <i class="fa fa-chevron-circle-right pull-right"></i>
+    <i class="fa fa-chevron-circle-left previous pull-left"></i>
+    <i class="fa fa-chevron-circle-right next pull-right"></i>
 </footer>
 
 <script>
@@ -57,6 +85,7 @@
 <script src="/assets/lodash/dist/lodash.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/assets/mousetrap/mousetrap.min.js"></script>
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script src="/js/orders.js"></script>
 <script src="/js/header.js"></script>
@@ -64,9 +93,9 @@
 <script src="/js/keyboard.js"></script>
 <script src="/js/StarWebPrintBuilder.js"></script>
 <script src="/js/StarWebPrintTrader.js"></script>
+<script src="/js/print.js"></script>
 
 </script>
-<script src="/js/print.js"></script>
 
 </body>
 </html>

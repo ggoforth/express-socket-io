@@ -1,13 +1,15 @@
-(function () {
+(function (_) {
 
   'use strict';
 
   function print(order) {
+    if (window.printerIp) return;
+
     var builder = new StarWebPrintBuilder();
     var request = '';
     var seatValue = '';
 
-    var url = `http://172.16.8.212/StarWebPRNT/SendMessage`;
+    var url = 'http://'+ window.printerIp +'/StarWebPRNT/SendMessage';
     var papertype = 'normal';
 
     var trader = new StarWebPrintTrader({url:url, papertype:papertype});
@@ -28,7 +30,7 @@
       if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n'; alert('Paper near end');}
 
       msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus:response.traderStatus}).toString() + ' ]\n';
-      console.log(msg);
+    //  alert(msg);
     }
 
     trader.onError = function (response) {
@@ -43,7 +45,7 @@
     }
 
     try {
-      request += builder.createInitializationElement();
+      request += builder.createInitializationElement({print:true});
 
       // Print user name at the top of receipt
       seatValue = order.user_id.firstName + ' ' + order.user_id.lastName;
@@ -71,7 +73,7 @@
       for(var i=0; i<order.seats.length; i++){
         //Creates a line before each new Seat and the Seat Number
         request += builder.createRuledLineElement({thickness: 'medium'});
-        request = createRequestTextElement(request, 'Seat ' + (i + 1));
+        request = createRequestTextElement(request, 'Plate ' + (i + 1));
 
         for(var key in order.seats[i]){
           if (key === 'double_protein'){
@@ -95,7 +97,7 @@
                 //Allows variations to be added to request to Beverages, Proteins, and Signature Bowls
                 var variation = '';
                 if (order.seats[i].sortedItems[j].name === 'Beverages' || order.seats[i].sortedItems[j].name === 'Proteins' || order.seats[i].sortedItems[j].name === 'Signature Bowls')
-                    variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
+                  variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
 
                 //Allows multiple orders of an item to be printed once with a multiplier, i.e. 1x 2x 3x
                 var multiplier = '';
@@ -132,13 +134,14 @@
       name = name.split(' ');
       for(var a=0; a<name.length; a++){
         name[a] = name[a].charAt(0).toUpperCase()
-                + name[a].substring(1, name[a].length).toLowerCase();
+          + name[a].substring(1, name[a].length).toLowerCase();
       }
       name = name.toString().replace(/,/g, ' ');
       return name;
     }
 
-    function createRequestTextElement(request, seatValue){
+    function createRequestTextElement(request, seatValue) {
+      console.log(seatValue);
       request += builder.createTextElement({
         codepage: 'cp998',
         international: 'usa',
