@@ -4,7 +4,6 @@
 
   function print(order) {
     if (window.printerIp) return;
-    //console.log(window.printerIp);
 
     var builder = new StarWebPrintBuilder();
     var request = '';
