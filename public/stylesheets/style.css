@@ -149,10 +149,14 @@ footer.actions i {
 
 footer.actions button.complete-order {
     /*border: 3px solid #FFB07B;*/
-    background-color: #FFFFFF;
+    background-color: rgba(255, 255, 255, .8);
+    /*background-color: #383335;*/
+    color: #383335;
     border: none;
     height: 45px;
     margin-top: 1px;
+    padding: .2em 2em .3em;
+    font-weight: bold;
 }
 
 .food-signal {
