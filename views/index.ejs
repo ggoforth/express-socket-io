@@ -30,25 +30,48 @@
                 <span class="current-order-index">0</span> /
                 <span class="num-orders">0</span>
             </span>
+<!--
+            <div class="printer pull-right">
+              <i class="pull-right printerSettings fa fa-gear" style="color: #FFFFFF;" data-toggle="modal" data-target="#myModal" style="padding:0"></i>
 
-            <div class="date-time pull-right"></div>
-
-            <div class="printer">
-              <button type="button" class="btn pull-right" data-toggle="modal" data-target="#myModal" style="padding:0">
-                <img class="settingBtn" src="/images/printerSettings.jpeg" />
-              </button>
-
-              <div class="modal" id="myModal" role="document">
-                <div class="modal-dialog pull-right">
-                  <div id="changeIp" class="changeIp">
+              <div class="modal" id="myModal" role="dialog">
+                  <div id="changeIp" class="modal-dialog pull-right">
                     <h4 class="modal-title">Enter Printer IP</h4>
-                    <div class="modal-body">
-                      <input class="printerIp" autofocus/>
+                    <div class="modal-body" style="padding-top: 5px;">
+                      <input class="printerIp" placeholder="Printer IP Address" autofocus />
+                    </div>
+                  </div>
+                </div>
+              </div>
+-->
+              <div class="printer pull-right">
+                <i class="pull-right printerSettings fa fa-gear"
+                   style="color: #FFFFFF; padding:0;"
+                   data-toggle="modal" data-target="#myModal"
+                   onclick="document.getElementById('printerIp').select()"></i>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Printer IP Address</h4>
+                      </div>
+                      <div class="modal-body">
+                        <input id="printerIp" class="printerIp" placeholder="Enter IP Address" autofocus="autofocus"/>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="save btn-primary">Save changes</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
+
+              <div class="date-time pull-right"></div>
             </div>
         </div>
     </header>
@@ -83,9 +106,9 @@
 <script src="/js/keyboard.js"></script>
 <script src="/js/StarWebPrintBuilder.js"></script>
 <script src="/js/StarWebPrintTrader.js"></script>
+<script src="/js/print.js"></script>
 
 </script>
-<script src="/js/print.js"></script>
 
 </body>
 </html>

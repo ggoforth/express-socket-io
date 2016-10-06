@@ -14,6 +14,7 @@
     $currentOrderIndex = $('.current-order-index'),
     $footer = $('footer'),
     $window = $(window),
+    $header = $('header'),
     orderRendered = false;
 
   /**
@@ -23,6 +24,42 @@
     $orderColumns.find('.order-column')
       .height($window.height() - orderColumnsOffset.top - 115);
   }).resize();
+
+  /**
+   * When we hit enter on printer IP modal input field
+   */
+   /*$header.find('.printerIp').on('keydown', function(e){
+    if(e.keyCode === 13){
+      window.printerIp = $(".printerIp").val();
+      console.log(window.printerIp);
+    }
+  });*/
+
+   /**
+    * When we click outside the printer IP modal input field
+    */
+    /*$header.find('.printerIp').on('blur', function(e){
+     window.printerIp = $(".printerIp").val();
+     console.log(window.printerIp);
+   });*/
+
+   /**
+    * When we click on Save Changes on modal
+    */
+  $header.find('.save').on('click', function(){
+    window.printerIp = $(".printerIp").val();
+    $('#myModal').modal('toggle');
+  });
+
+    /**
+     * When we hit enter on printer IP modal
+     */
+   $header.find('.printerIp').on('keydown', function(e){
+    if(e.keyCode === 13){
+      window.printerIp = $(".printerIp").val();
+      $('#myModal').modal('hide');
+    }
+  });
 
   /**
    * When we click on the previous icon.
@@ -37,13 +74,13 @@
   $footer.find('.next').on('click', function () {
     Orders.next();
   });
-  
+
   $footer.find('.complete-order').on('click', function () {
     if (!confirm('Are you sure this order is complete?')) return;
-    
+
     var order = Orders.getCurrentOrder();
     if (!order) return;
-   
+
     var markCompleted = $.ajax({
       url: '/' + window.locationId + '/complete-order/' + order._id,
       type: 'GET'
@@ -57,7 +94,7 @@
 
   /**
    * Find a bowl size based on the selected items.
-   * 
+   *
    * @param seat
    * @returns {*}
    */
@@ -65,7 +102,7 @@
     var items = seat.selected_items,
       signatureBowl = _.find(items, {category: {name: 'Signature Bowls'}}),
       protein = _.find(items, {category: {name: 'Proteins'}});
-   
+
     if (signatureBowl) return signatureBowl.variation.name;
     if (protein) return protein.variation.name;
     return '';
@@ -83,7 +120,7 @@
       $order = $('<li>' + _.capitalize(findBowlSize(seat)) + ' Bowl</li>'),
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
-    
+
     $order.append($items);
     $seat.append($order);
 
@@ -112,7 +149,7 @@
 
   /**
    * Build the proper order header.
-   * 
+   *
    * @param order
    * @returns {*}
    */
@@ -152,17 +189,17 @@
   window.renderOrder = function renderOrder(order, force) {
     if (orderRendered && !force) return;
     var orderHeaderContent = orderHeaderHTML(order);
-    $currentOrderIndex.text(Orders.getOrderIndex(order) + 1); 
-    
+    $currentOrderIndex.text(Orders.getOrderIndex(order) + 1);
+
     $orderHeader.html(orderHeaderContent);
-    
+
     if (order) {
       _.each(order.seats, renderColumn.bind({}, order));
       orderRendered = true;
     } else {
       orderRendered = false;
     }
-    
+
     $window.trigger('layout-columns');
   };
 

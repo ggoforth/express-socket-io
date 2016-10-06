@@ -1,13 +1,16 @@
-(function () {
+(function (_) {
 
   'use strict';
 
   function print(order) {
+    //if (window.printerIp) return;
+    console.log(window.printerIp);
+
     var builder = new StarWebPrintBuilder();
     var request = '';
     var seatValue = '';
 
-    var url = `http://172.16.8.212/StarWebPRNT/SendMessage`;
+    var url = 'http://'+ window.printerIp +'/StarWebPRNT/SendMessage';
     var papertype = 'normal';
 
     var trader = new StarWebPrintTrader({url:url, papertype:papertype});
@@ -71,7 +74,9 @@
       for(var i=0; i<order.seats.length; i++){
         //Creates a line before each new Seat and the Seat Number
         request += builder.createRuledLineElement({thickness: 'medium'});
-        request = createRequestTextElement(request, 'Seat ' + (i + 1));
+        request = createRequestTextElement(request, 'Plate ' + (i + 1));
+
+        //request = createRequestTextElement(request, _.findBowlSize(order.seat[i]) + ' Bowl');
 
         for(var key in order.seats[i]){
           if (key === 'double_protein'){
@@ -122,7 +127,7 @@
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
-      trader.sendMessage({request:request});
+      //trader.sendMessage({request:request});
     }
     catch (e) {
       alert(e.message);
