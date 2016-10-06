@@ -1,3 +1,9 @@
+html {
+    position: relative;
+    height: 100%;
+    min-height: 100%;
+}
+
 body {
     background-color: #2B2628;
     height: 100%;
@@ -81,10 +87,44 @@ header .date-time {
     padding: 0;
 }
 
+.order-column ul.seat .bowl-size {
+    margin: 0 0 20px;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #FFB07B;
+    border-radius: 35px;
+    position: relative;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #FFFFFF;
+    color: #2B2628;
+    float: left;
+}
+
+.order-column ul.seat .bowl-size .bowl-size-inner {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 100%;
+    background-image: url(../images/bowl.png);
+    background-position: center;
+    background-size: contain;
+}
+
+.bowl-size-text {
+    display: inline-block;
+    margin-top: 15px;
+    margin-left: 15px;
+    font-size: 1.3em;
+}
+
 .order-column ul.seat ul.items {
     list-style-type: none;
     margin: 10px 0 0 0;
     padding: 0;
+    clear: both;
 }
 
 .order-column ul.seat ul.items li {
@@ -93,7 +133,7 @@ header .date-time {
 
 .order-column ul.seat ul.items ul.step-items {
     list-style-type: none;
-    margin: 10px 0 15px 0;
+    margin: 3px 0 25px 0;
     padding: 0;
 }
 
@@ -150,7 +190,31 @@ footer.actions i {
 }
 
 footer.actions button.complete-order {
-    background-color: #FFB07B;
+    /*border: 3px solid #FFB07B;*/
+    background-color: rgba(255, 255, 255, .8);
+    /*background-color: #383335;*/
+    color: #383335;
     border: none;
-    height: 50px;
+    height: 45px;
+    margin-top: 1px;
+    padding: .2em 2em .3em;
+    font-weight: bold;
 }
+
+.food-signal {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: url(../images/logo-large-black.png) no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 100%;
+    height: 50%;
+    margin: 0 auto;
+    display: none;
+}
+
+body.no-orders .food-signal {
+    display: block;
+}
+

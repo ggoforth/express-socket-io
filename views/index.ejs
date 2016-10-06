@@ -71,31 +71,33 @@
 </div>
 
 <footer class="actions text-center">
-    <button class="btn btn-lg btn-default complete-order">Order Complete</button>
+    <button class="btn btn-lg btn-default complete-order">Complete This Order</button>
     <i class="fa fa-chevron-circle-left previous pull-left"></i>
     <i class="fa fa-chevron-circle-right next pull-right"></i>
 </footer>
+
+<div class="food-signal">&nbsp;</div>
 
 <script>
     window.locationId = '<%= locationId %>';
 </script>
 
+<script src="/assets/async/dist/async.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bluebird/latest/bluebird.min.js"></script>
 <script src="/assets/moment/min/moment.min.js"></script>
 <script src="/assets/jquery/dist/jquery.min.js"></script>
 <script src="/assets/lodash/dist/lodash.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/assets/mousetrap/mousetrap.min.js"></script>
 <script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/js/StarWebPrintBuilder.js"></script>
+<script src="/js/StarWebPrintTrader.js"></script>
 
 <script src="/js/orders.js"></script>
 <script src="/js/header.js"></script>
-<script src="/js/app.js"></script>
 <script src="/js/keyboard.js"></script>
-<script src="/js/StarWebPrintBuilder.js"></script>
-<script src="/js/StarWebPrintTrader.js"></script>
 <script src="/js/print.js"></script>
-
-</script>
+<script src="/js/app.js"></script>
 
 </body>
 </html>

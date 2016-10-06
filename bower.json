@@ -20,6 +20,7 @@
     "bootstrap": "^3.3.7",
     "lodash": "^4.15.0",
     "moment": "^2.14.1",
-    "mousetrap": "^1.6.0"
+    "mousetrap": "^1.6.0",
+    "async": "^2.0.1"
   }
 }
