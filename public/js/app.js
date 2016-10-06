@@ -9,6 +9,7 @@
    * @type {*|HTMLElement}
    */
   var $orderColumns = $('.order-columns'),
+    $body = $('body'),
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
     $currentOrderIndex = $('.current-order-index'),
@@ -24,24 +25,6 @@
     $orderColumns.find('.order-column')
       .height($window.height() - orderColumnsOffset.top - 115);
   }).resize();
-
-  /**
-   * When we hit enter on printer IP modal input field
-   */
-   /*$header.find('.printerIp').on('keydown', function(e){
-    if(e.keyCode === 13){
-      window.printerIp = $(".printerIp").val();
-      console.log(window.printerIp);
-    }
-  });*/
-
-   /**
-    * When we click outside the printer IP modal input field
-    */
-    /*$header.find('.printerIp').on('blur', function(e){
-     window.printerIp = $(".printerIp").val();
-     console.log(window.printerIp);
-   });*/
 
    /**
     * When we click on Save Changes on modal
@@ -75,12 +58,14 @@
     Orders.next();
   });
 
+  /**
+   * Complete an order.
+   */
   $footer.find('.complete-order').on('click', function () {
-    if (!confirm('Are you sure this order is complete?')) return;
-
+    if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
     var order = Orders.getCurrentOrder();
     if (!order) return;
-
+   
     var markCompleted = $.ajax({
       url: '/' + window.locationId + '/complete-order/' + order._id,
       type: 'GET'
@@ -89,6 +74,11 @@
     markCompleted.then(function () {
       window.clearOrder();
       Orders.removeCurrentOrder();
+      if (!Orders.numOrders()) {
+        $body.addClass('no-orders');
+      } else {
+        $body.removeClass('no-orders');
+      }
     });
   });
 
@@ -117,7 +107,7 @@
   function buildSeatHTML(seat) {
     var $cont = $('<div></div>'),
       $seat = $('<ul></ul>').addClass('seat'),
-      $order = $('<li>' + _.capitalize(findBowlSize(seat)) + ' Bowl</li>'),
+      $order = $('<li><div class="bowl-size"><div class="bowl-size-inner"></div></div><span class="bowl-size-text">' + _.capitalize(findBowlSize(seat)) + ' Bowl</span> </li>'),
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
 
@@ -201,6 +191,7 @@
     }
 
     $window.trigger('layout-columns');
+    $body.removeClass('no-orders');
   };
 
   /**
@@ -219,4 +210,13 @@
    * @type {renderColumn}
    */
   Orders.registerOrderNotification(renderOrder);
+
+  /**
+   * Get the initial orders and render them on the screen,
+   * as well as printing.
+   */
+  Orders.getInitialOrders()
+    .then(function () {
+      if (!Orders.numOrders()) $body.addClass('no-orders');
+    });
 }(jQuery, _));
