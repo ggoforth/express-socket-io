@@ -41,7 +41,29 @@ function getOrder(req, res, next) {
   res.sendStatus(200);
 }
 
+/**
+ * Mark an order as completed.
+ * 
+ * @param req
+ * @param res
+ * @param next
+ */
+function getCompleteOrder(req, res, next) {
+  let orderId = req.params.orderId,
+    location_id = req.params.locationId;
+
+  Order.findOne({location_id, _id: orderId})
+    .then(order => {
+      order.completed = Date.now();
+      order.save()
+        .then(() => {
+          res.send(order); 
+        });
+    });
+}
+
 router.post('/:locationId/new-order', getOrder);
 router.get('/:locationId/new-order/:orderId', getOrder);
+router.get('/:locationId/complete-order/:orderId', getCompleteOrder);
 
 module.exports = router;

@@ -10,7 +10,6 @@ const models = () => glob(`${modelsPath}/**/*.js`);
 
 module.exports = {
   init: () => {
-    console.log(`Connecting to ${process.env.MONGO_URI}`);
     mongoose.connect(process.env.MONGO_URI);
 
     let db = mongoose.connection;
@@ -23,6 +22,8 @@ module.exports = {
         db.once('open', console.log.bind(console, 'Database connected.'));
 
         mongoose.Promise = require('bluebird');
+        
+        return db;
       })
       .catch(err => {
         console.log('THE ERR: ', err); 

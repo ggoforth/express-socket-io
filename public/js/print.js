@@ -28,7 +28,7 @@
       if (trader.isPaperNearEnd         ({traderStatus:response.traderStatus})) {msg += '\tPaperNearEnd,\n'; alert('Paper near end');}
 
       msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus:response.traderStatus}).toString() + ' ]\n';
-      console.log(msg);
+    //  alert(msg);
     }
 
     trader.onError = function (response) {
@@ -95,7 +95,7 @@
                 //Allows variations to be added to request to Beverages, Proteins, and Signature Bowls
                 var variation = '';
                 if (order.seats[i].sortedItems[j].name === 'Beverages' || order.seats[i].sortedItems[j].name === 'Proteins' || order.seats[i].sortedItems[j].name === 'Signature Bowls')
-                    variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
+                  variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
 
                 //Allows multiple orders of an item to be printed once with a multiplier, i.e. 1x 2x 3x
                 var multiplier = '';
@@ -122,7 +122,7 @@
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
-      //trader.sendMessage({request:request});
+      trader.sendMessage({request:request});
     }
     catch (e) {
       alert(e.message);
@@ -132,13 +132,14 @@
       name = name.split(' ');
       for(var a=0; a<name.length; a++){
         name[a] = name[a].charAt(0).toUpperCase()
-                + name[a].substring(1, name[a].length).toLowerCase();
+          + name[a].substring(1, name[a].length).toLowerCase();
       }
       name = name.toString().replace(/,/g, ' ');
       return name;
     }
 
-    function createRequestTextElement(request, seatValue){
+    function createRequestTextElement(request, seatValue) {
+      console.log(seatValue);
       request += builder.createTextElement({
         codepage: 'cp998',
         international: 'usa',

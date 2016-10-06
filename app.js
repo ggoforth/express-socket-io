@@ -18,7 +18,7 @@ let express = require('express'),
  * Initialize database connection and models.
  */
 db.init()
-  .then(() => {
+  .then((db) => {
     /**
      * When we get the io connection set up socket listeners for
      * joining of specific locations.
@@ -28,7 +28,7 @@ db.init()
 
       socket.on('join location', locationId => {
         console.log(`User joined location ${locationId}`);
-        
+
         // Join a specified location.
         socket.join(locationId);
 

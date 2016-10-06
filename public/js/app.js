@@ -12,6 +12,7 @@
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
     $currentOrderIndex = $('.current-order-index'),
+    $footer = $('footer'),
     $window = $(window),
     orderRendered = false;
 
@@ -20,8 +21,55 @@
    */
   $window.on('resize layout-columns', function () {
     $orderColumns.find('.order-column')
-      .height($window.height() - orderColumnsOffset.top - 40);
+      .height($window.height() - orderColumnsOffset.top - 115);
   }).resize();
+
+  /**
+   * When we click on the previous icon.
+   */
+  $footer.find('.previous').on('click', function () {
+    Orders.previous();
+  });
+
+  /**
+   * When we click on the next icon.
+   */
+  $footer.find('.next').on('click', function () {
+    Orders.next();
+  });
+  
+  $footer.find('.complete-order').on('click', function () {
+    if (!confirm('Are you sure this order is complete?')) return;
+    
+    var order = Orders.getCurrentOrder();
+    if (!order) return;
+   
+    var markCompleted = $.ajax({
+      url: '/' + window.locationId + '/complete-order/' + order._id,
+      type: 'GET'
+    });
+
+    markCompleted.then(function () {
+      window.clearOrder();
+      Orders.removeCurrentOrder();
+    });
+  });
+
+  /**
+   * Find a bowl size based on the selected items.
+   * 
+   * @param seat
+   * @returns {*}
+   */
+  function findBowlSize(seat) {
+    var items = seat.selected_items,
+      signatureBowl = _.find(items, {category: {name: 'Signature Bowls'}}),
+      protein = _.find(items, {category: {name: 'Proteins'}});
+   
+    if (signatureBowl) return signatureBowl.variation.name;
+    if (protein) return protein.variation.name;
+    return '';
+  }
 
   /**
    * Build out one seat for the order display.
@@ -32,7 +80,7 @@
   function buildSeatHTML(seat) {
     var $cont = $('<div></div>'),
       $seat = $('<ul></ul>').addClass('seat'),
-      $order = $('<li>' + _.capitalize(seat.bowl_size) + ' Bowl</li>'),
+      $order = $('<li>' + _.capitalize(findBowlSize(seat)) + ' Bowl</li>'),
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
     
@@ -63,12 +111,13 @@
   }
 
   /**
-   * Build the order header.
-   *
+   * Build the proper order header.
+   * 
    * @param order
-   * @returns {*|HTMLElement}
+   * @returns {*}
    */
   function orderHeaderHTML(order) {
+    if (!order) return '';
     var $orderHeader = $('<div></div>');
 
     $orderHeader.append('<span class="pull-right">' + moment().format('h:mm A') + '</span>');
@@ -94,20 +143,27 @@
   }
 
   /**
-   * Responsible for rendering an order on the screen.
+   * Responsible for rendering an order on the screen. It is possible for order to be null,
+   * in cases where we've removed or completed the last order in the stack.
    *
    * @param order
    * @param force
    */
   window.renderOrder = function renderOrder(order, force) {
     if (orderRendered && !force) return;
-    
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1); 
+    
     $orderHeader.html(orderHeaderContent);
-    _.each(order.seats, renderColumn.bind({}, order));
+    
+    if (order) {
+      _.each(order.seats, renderColumn.bind({}, order));
+      orderRendered = true;
+    } else {
+      orderRendered = false;
+    }
+    
     $window.trigger('layout-columns');
-    orderRendered = true;
   };
 
   /**
@@ -116,6 +172,7 @@
   window.clearOrder = function clearOrder() {
     $orderHeader.html('&nbsp;');
     $orderColumns.empty();
+    orderRendered = false;
   };
 
   /**
