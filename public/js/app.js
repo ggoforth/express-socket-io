@@ -40,6 +40,7 @@
   });
   
   $footer.find('.complete-order').on('click', function () {
+    debugger;
     if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
     var order = Orders.getCurrentOrder();
     if (!order) return;
@@ -158,8 +159,7 @@
     if (orderRendered && !force) return;
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1); 
-    
-    
+
     $orderHeader.html(orderHeaderContent);
     
     if (order) {
@@ -196,8 +196,6 @@
    */
   Orders.getInitialOrders()
     .then(function () {
-      if (!Orders.numOrders()) {
-        $body.addClass('no-orders');
-      } 
+      if (!Orders.numOrders()) $body.addClass('no-orders');
     });
 }(jQuery, _));

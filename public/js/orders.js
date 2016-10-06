@@ -77,7 +77,7 @@
       _.remove(orders, this.getOrderByIndex(this.currentOrderIndex));
       this.currentOrderIndex = Math.max(--this.currentOrderIndex, 0);
       var nextOrder = this.getOrderByIndex(this.currentOrderIndex);
-      if (nextOrder) this.runOrderNotifications(nextOrder, true);
+      this.runOrderNotifications(nextOrder);
     },
 
     /**

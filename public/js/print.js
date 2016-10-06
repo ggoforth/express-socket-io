@@ -26,7 +26,7 @@
    * @param callback
    */
   var printOrder = function print(order, forcePrint, callback) {
-    if (printDisabled) return;
+    if (printDisabled || !order) return;
     if (order.printed && !forcePrint) return;
     
     var builder = new StarWebPrintBuilder();
@@ -88,7 +88,7 @@
       msg += '\tStatus:' + response.status + '\n';
       msg += '\tResponseText:' + response.responseText;
 
-      alert(msg);
+      // alert(msg);
     };
 
     try {
