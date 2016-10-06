@@ -9,12 +9,14 @@
    * @type {*|HTMLElement}
    */
   var $orderColumns = $('.order-columns'),
+    PRINTERIP = 'butterfish-printerIp',
     $body = $('body'),
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
     $currentOrderIndex = $('.current-order-index'),
     $footer = $('footer'),
     $window = $(window),
+    $header = $('header'),
     orderRendered = false;
 
   /**
@@ -24,6 +26,25 @@
     $orderColumns.find('.order-column')
       .height($window.height() - orderColumnsOffset.top - 115);
   }).resize();
+
+  /**
+   * When we click on Save Changes on modal
+   */
+  $header.find('.save').on('click', function () {
+    window.printerIp = $(".printerIp").val();
+    window.localStorage.setItem(PRINTERIP, window.printerIp);
+    $('#myModal').modal('toggle');
+  });
+
+  /**
+   * When we hit enter on printer IP modal
+   */
+  $header.find('.printerIp').on('keydown', function (e) {
+    if (e.keyCode === 13) {
+      window.printerIp = $(".printerIp").val();
+      $('#myModal').modal('hide');
+    }
+  });
 
   /**
    * When we click on the previous icon.
@@ -46,7 +67,7 @@
     if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
     var order = Orders.getCurrentOrder();
     if (!order) return;
-   
+
     var markCompleted = $.ajax({
       url: '/' + window.locationId + '/complete-order/' + order._id,
       type: 'GET'
@@ -65,7 +86,7 @@
 
   /**
    * Find a bowl size based on the selected items.
-   * 
+   *
    * @param seat
    * @returns {*}
    */
@@ -73,7 +94,7 @@
     var items = seat.selected_items,
       signatureBowl = _.find(items, {category: {name: 'Signature Bowls'}}),
       protein = _.find(items, {category: {name: 'Proteins'}});
-   
+
     if (signatureBowl) return signatureBowl.variation.name;
     if (protein) return protein.variation.name;
     return '';
@@ -91,7 +112,7 @@
       $order = $('<li><div class="bowl-size"><div class="bowl-size-inner"></div></div><span class="bowl-size-text">' + _.capitalize(findBowlSize(seat)) + ' Bowl</span> </li>'),
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
-    
+
     $order.append($items);
     $seat.append($order);
 
@@ -120,7 +141,7 @@
 
   /**
    * Build the proper order header.
-   * 
+   *
    * @param order
    * @returns {*}
    */
@@ -160,17 +181,17 @@
   window.renderOrder = function renderOrder(order, force) {
     if (orderRendered && !force) return;
     var orderHeaderContent = orderHeaderHTML(order);
-    $currentOrderIndex.text(Orders.getOrderIndex(order) + 1); 
+    $currentOrderIndex.text(Orders.getOrderIndex(order) + 1);
 
     $orderHeader.html(orderHeaderContent);
-    
+
     if (order) {
       _.each(order.seats, renderColumn.bind({}, order));
       orderRendered = true;
     } else {
       orderRendered = false;
     }
-    
+
     $window.trigger('layout-columns');
     $body.removeClass('no-orders');
   };
@@ -192,6 +213,11 @@
    */
   Orders.registerOrderNotification(renderOrder);
 
+  /**
+   * Setup the networked printer ip.
+   */
+  window.printerIp = localStorage.getItem(PRINTERIP);
+  
   /**
    * Get the initial orders and render them on the screen,
    * as well as printing.

@@ -26,14 +26,14 @@
    * @param callback
    */
   var printOrder = function print(order, forcePrint, callback) {
-    if (printDisabled || !order) return;
+    if (printDisabled || !order || !window.printerIp) return;
     if (order.printed && !forcePrint) return;
     
     var builder = new StarWebPrintBuilder();
     var request = '';
     var seatValue = '';
 
-    var url = `http://172.16.8.212/StarWebPRNT/SendMessage`;
+    var url = 'http://' + window.printerIp + '/StarWebPRNT/SendMessage';
     var papertype = 'normal';
 
     var trader = new StarWebPrintTrader({url: url, papertype: papertype});
