@@ -40,7 +40,6 @@
   });
   
   $footer.find('.complete-order').on('click', function () {
-    debugger;
     if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
     var order = Orders.getCurrentOrder();
     if (!order) return;
