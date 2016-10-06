@@ -218,3 +218,7 @@ body.no-orders .food-signal {
     display: block;
 }
 
+.printerSettings {
+    cursor: pointer;
+}
+
