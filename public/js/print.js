@@ -43,7 +43,7 @@
     }
 
     try {
-      request += builder.createInitializationElement();
+      request += builder.createInitializationElement({print:true});
 
       // Print user name at the top of receipt
       seatValue = order.user_id.firstName + ' ' + order.user_id.lastName;

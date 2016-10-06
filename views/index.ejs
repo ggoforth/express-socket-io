@@ -29,6 +29,23 @@
             </span>
 
             <div class="date-time pull-right"></div>
+
+            <div class="printer">
+              <button type="button" class="btn pull-right" data-toggle="modal" data-target="#myModal" style="padding:0">
+                <img src="/images/printerSettings.jpeg" height="30" width="30" style="display: block"/>
+              </button>
+
+              <div class="modal fade" id="myModal" role="document">
+                <div class="modal-dialog pull-right" style="max-width:200px">
+                  <div id="changeIp" class="changeIp">
+                    <h4 class="modal-title" style="color:white; text-align:center">Enter Printer IP</h4>
+                    <div class="modal-body">
+                      <input class="printerIp" autofocus/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
     </header>
 
@@ -48,6 +65,7 @@
 <script src="/assets/lodash/dist/lodash.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/assets/mousetrap/mousetrap.min.js"></script>
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script src="/js/orders.js"></script>
 <script src="/js/header.js"></script>

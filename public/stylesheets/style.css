@@ -17,6 +17,10 @@ header .date-time {
     font-weight: 200;
 }
 
+.modal-dialog{
+  background-color: inherit;
+}
+
 .order-columns {
     color: #FFFFFF;
     margin-top: 0;

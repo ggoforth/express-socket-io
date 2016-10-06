@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
-  config.vm.network "forwarded_port", guest: 8080, host: 4000
+  config.vm.network "forwarded_port", guest: 8080, host: 3000
   config.vm.provision "shell", path: "./vagrant-scripts/provision.root.sh"
   config.vm.provision "shell", path: "./vagrant-scripts/provision.user.sh", privileged: false
 
