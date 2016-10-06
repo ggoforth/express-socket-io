@@ -122,7 +122,7 @@
       request += builder.createRuledLineElement({thickness: 'medium'});
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
-      trader.sendMessage({request:request});
+      //trader.sendMessage({request:request});
     }
     catch (e) {
       alert(e.message);

@@ -17,8 +17,25 @@ header .date-time {
     font-weight: 200;
 }
 
+.modal{
+  padding-top: 90px;
+}
+
 .modal-dialog{
+  max-width:200px;
+  padding-top:10px;
   background-color: inherit;
+}
+
+.modal-title{
+  color:#E8A170;
+  text-align:center;
+}
+
+.settingBtn{
+  height: 30px;
+  width: 30px;
+  display: block;
 }
 
 .order-columns {

@@ -32,19 +32,20 @@
 
             <div class="printer">
               <button type="button" class="btn pull-right" data-toggle="modal" data-target="#myModal" style="padding:0">
-                <img src="/images/printerSettings.jpeg" height="30" width="30" style="display: block"/>
+                <img class="settingBtn" src="/images/printerSettings.jpeg" />
               </button>
 
-              <div class="modal fade" id="myModal" role="document">
-                <div class="modal-dialog pull-right" style="max-width:200px">
+              <div class="modal" id="myModal" role="document">
+                <div class="modal-dialog pull-right">
                   <div id="changeIp" class="changeIp">
-                    <h4 class="modal-title" style="color:white; text-align:center">Enter Printer IP</h4>
+                    <h4 class="modal-title">Enter Printer IP</h4>
                     <div class="modal-body">
                       <input class="printerIp" autofocus/>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
         </div>
     </header>
