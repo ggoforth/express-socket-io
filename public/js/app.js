@@ -10,7 +10,7 @@
    */
   var $orderColumns = $('.order-columns'),
     PRINTERIP = 'butterfish-printerIp',
-    debug = false,
+    debug = true,
     $body = $('body'),
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
@@ -84,13 +84,12 @@
       $th.append($theadRow);
 
       _.each(orders, function (order) {
-        console.log(order);
         var $tr = $('<tr></tr>'),
           orderDate = moment(order.created_at);
         
         $tr.append('<td>' + order.name + '</td>');
         $tr.append('<td>' + order.seats.length + '</td>');
-        $tr.append('<td>$' + order.total.dollars + '</td>');
+        $tr.append('<td>$' + parseFloat(order.total.dollars).toFixed(2) + '</td>');
         $tr.append('<td>' + orderDate.format('MMM. Do YYYY h:mm A') + '</td>');
         $tr.append('<td><button class="pull-right reprint btn btn-sm">Reprint</button></td>');
         $tb.append($tr);
