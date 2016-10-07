@@ -22,10 +22,14 @@ router.get('/:locationId', function (req, res) {
  * Get orders for a location
  */
 router.get('/:locationId/orders', function (req, res, next) {
+  let today = moment().startOf('day').toDate();
+  
+  console.log(`Getting orders for ${today}`);
+  
   Order.find({
     location_id: req.params.locationId,
     completed: null, // not yet complete
-    created_at: {$gte: moment().startOf('day').toDate()} // placed today
+    created_at: {$gte: today} // placed today
   })
     .populate('user_id')
     .exec()
