@@ -24,8 +24,6 @@ router.get('/:locationId', function (req, res) {
 router.get('/:locationId/orders', function (req, res, next) {
   let today = moment().startOf('day').toDate();
   
-  console.log(`Getting orders for ${today}`);
-  
   Order.find({
     location_id: req.params.locationId,
     completed: null, // not yet complete
