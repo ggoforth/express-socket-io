@@ -134,7 +134,7 @@
         //Print Bowl size
         seatValue = Orders.findBowlSize(order.seats[i]);
         if(seatValue !== '' || seatValue !== 'undefined'){
-          seatValue = _.capitalize(seatValue) + ' Bowl';
+          seatValue = capitalize(seatValue) + ' Bowl';
           request = createRequestTextElement(request, seatValue);
         }
 
@@ -153,14 +153,14 @@
 
                 //If there are multiple items for one category, it will only print the category name once
                 if (lastCategory !== currentCategory) {
-                  request = createRequestTextElement(request, _.capitalize(currentCategory) + ':');
+                  request = createRequestTextElement(request, capitalize(currentCategory) + ':');
                   lastCategory = currentCategory;
                 }
 
                 //Allows variations to be added to request to Beverages, Proteins, and Signature Bowls
                 var variation = '';
                 if (order.seats[i].sortedItems[j].name === 'Beverages' || order.seats[i].sortedItems[j].name === 'Proteins' || order.seats[i].sortedItems[j].name === 'Signature Bowls')
-                  variation = _.capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
+                  variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
 
                 //Allows multiple orders of an item to be printed once with a multiplier, i.e. 1x 2x 3x
                 var multiplier = '';
@@ -173,13 +173,13 @@
                   delete order.seats[i].sortedItems[j].items[k].name;
                 } else {
                   lastItem = currentItem;
-                  request = createRequestTextElement(request, '  ' + multiplier + variation + _.capitalize(order.seats[i].sortedItems[j].items[k].name));
+                  request = createRequestTextElement(request, '  ' + multiplier + variation + capitalize(order.seats[i].sortedItems[j].items[k].name));
                 }
               }
             }
           } else if (key === 'special_instructions') {
             if (order.seats[i].special_instructions !== '')
-              request = createRequestTextElement(request, 'Special Instructions: \n  ' + _.capitalize(order.seats[i].special_instructions));
+              request = createRequestTextElement(request, 'Special Instructions: \n  ' + capitalize(order.seats[i].special_instructions));
           }
         }
       }
@@ -191,6 +191,16 @@
     }
     catch (e) {
        alert(e.message);
+    }
+
+    function capitalize(name) {
+      name = name.split(' ');
+      for (var a = 0; a < name.length; a++) {
+        name[a] = name[a].charAt(0).toUpperCase()
+          + name[a].substring(1, name[a].length).toLowerCase();
+      }
+      name = name.toString().replace(/,/g, ' ');
+      return name;
     }
 
     function createRequestTextElement(request, seatValue) {
