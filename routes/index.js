@@ -38,6 +38,25 @@ router.get('/:locationId/orders', function (req, res, next) {
 });
 
 /**
+ * Get recently closed orders for a location
+ */
+router.get('/:locationId/recent-orders', function (req, res, next) {
+  let today = moment().startOf('day').toDate();
+
+  Order.find({
+    location_id: req.params.locationId,
+    completed: {$ne: null}, // completed
+    created_at: {$gte: today} // placed today
+  })
+    .populate('user_id')
+    .exec()
+    .then(orders => _.map(orders, sort))
+    .then(orders => {
+      res.json(orders);
+    });
+});
+
+/**
  * When a new order comes in.
  */
 function getOrder(req, res, next) {

@@ -231,4 +231,18 @@ body.no-orders .food-signal {
     display: block;
 }
 
+.recent-orders {
+    padding: 15px;
+}
 
+.reprint {
+    background-color: #FFB07B;
+}
+
+.recent-orders thead th {
+    color: #FFB07B;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #3C3739;
+}

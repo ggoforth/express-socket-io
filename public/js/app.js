@@ -10,6 +10,7 @@
    */
   var $orderColumns = $('.order-columns'),
     PRINTERIP = 'butterfish-printerIp',
+    debug = false,
     $body = $('body'),
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
@@ -48,6 +49,66 @@
   });
 
   /**
+   * Allow for toggling back to order view from other states.
+   */
+  $header.find('.home').on('click', function () {
+    window.clearOrder();
+    Orders.runOrderNotifications(Orders.getCurrentOrder());
+    $footer.show();
+  });
+
+  /**
+   * Switch to a state showing all completed orders for today.
+   */
+  $header.find('.completed-orders').on('click', function () {
+    window.clearOrder();
+    $orderHeader.text('Recently Completed Orders');
+    $footer.hide();
+
+    var recentOrders = $.ajax({
+      url: window.locationId + '/recent-orders',
+      type: 'GET'
+    });
+
+    recentOrders.then(function (orders) {
+      var $orderTable = $('<div class="recent-orders"></div>'),
+        $table = $('<table class="table table-striped"></table>'),
+        $th = $('<thead></thead>'),
+        $tb = $('<tbody></tbody>'),
+        $theadRow = $('<tr></tr>');
+      
+      _.each(['Order Name', '# Seats', 'Order Total', 'Order Date', ''], function (header) {
+        $theadRow.append('<th>' + header + '</th>'); 
+      });
+      
+      $th.append($theadRow);
+
+      _.each(orders, function (order) {
+        console.log(order);
+        var $tr = $('<tr></tr>'),
+          orderDate = moment(order.created_at);
+        
+        $tr.append('<td>' + order.name + '</td>');
+        $tr.append('<td>' + order.seats.length + '</td>');
+        $tr.append('<td>$' + order.total.dollars + '</td>');
+        $tr.append('<td>' + orderDate.format('MMM. Do YYYY h:mm A') + '</td>');
+        $tr.append('<td><button class="pull-right reprint btn btn-sm">Reprint</button></td>');
+        $tb.append($tr);
+        
+        $tr.find('.reprint').on('click', function () {
+          window.printOrder(order, true);
+        });
+      });
+
+      $table.append($th);
+      $table.append($tb);
+      $orderTable.append($table);
+
+      $orderColumns.append($orderTable);
+    });
+  });
+
+  /**
    * When we click on the previous icon.
    */
   $footer.find('.previous').on('click', function () {
@@ -66,7 +127,6 @@
    */
   $footer.find('.complete-order').on('click', function () {
     if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
-    debugger;
     var order = Orders.getCurrentOrder();
     if (!order) return;
 
@@ -182,7 +242,7 @@
    */
   window.renderOrder = function renderOrder(order, force) {
     if (orderRendered && !force) return;
-    $debug.text(order._id);
+    if (debug) $debug.text(order._id);
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1);
 
@@ -220,7 +280,7 @@
    * Setup the networked printer ip.
    */
   window.printerIp = localStorage.getItem(PRINTERIP);
-  
+
   /**
    * Get the initial orders and render them on the screen,
    * as well as printing.
