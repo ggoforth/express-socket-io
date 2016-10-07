@@ -20,7 +20,7 @@
 
   /**
    * Print an order.
-   * 
+   *
    * @param order
    * @param forcePrint
    * @param callback
@@ -28,7 +28,7 @@
   var printOrder = function print(order, forcePrint, callback) {
     if (printDisabled || !order || !window.printerIp) return;
     if (order.printed && !forcePrint) return;
-    
+
     var builder = new StarWebPrintBuilder();
     var request = '';
     var seatValue = '';
@@ -46,49 +46,58 @@
 
       if (trader.isCoverOpen({traderStatus: response.traderStatus})) {
         msg += '\tCoverOpen,\n';
+        alert('Printer cover is open');
       }
       if (trader.isOffLine({traderStatus: response.traderStatus})) {
         msg += '\tOffLine,\n';
-      }
-      if (trader.isCompulsionSwitchClose({traderStatus: response.traderStatus})) {
-        msg += '\tCompulsionSwitchClose,\n';
+        alert('Printer is offline');
       }
       if (trader.isEtbCommandExecute({traderStatus: response.traderStatus})) {
         msg += '\tEtbCommandExecute,\n';
+        alert('ETB command executed');
       }
       if (trader.isHighTemperatureStop({traderStatus: response.traderStatus})) {
         msg += '\tHighTemperatureStop,\n';
+        alert('Printer stopped by high head temperature');
       }
       if (trader.isNonRecoverableError({traderStatus: response.traderStatus})) {
         msg += '\tNonRecoverableError,\n';
+        alert('Non recoverable error');
       }
       if (trader.isAutoCutterError({traderStatus: response.traderStatus})) {
         msg += '\tAutoCutterError,\n';
+        alert('Printer auto cutter error');
       }
       if (trader.isBlackMarkError({traderStatus: response.traderStatus})) {
         msg += '\tBlackMarkError,\n';
+        alert('Printer black mark error');
       }
       if (trader.isPaperEnd({traderStatus: response.traderStatus})) {
         msg += '\tPaperEnd,\n';
+        alert('Printer paper end');
       }
       if (trader.isPaperNearEnd({traderStatus: response.traderStatus})) {
         msg += '\tPaperNearEnd,\n';
+        alert('Printer paper near end');
       }
 
       msg += '\tEtbCounter = ' + trader.extractionEtbCounter({traderStatus: response.traderStatus}).toString() + ' ]\n';
 
       //TODO: how to handle msg
       order.printed = true;
-      
+
       if (callback && _.isFunction(callback)) callback();
     };
 
     trader.onError = function (response) {
-      var msg = '- onError -\n\n';
-      msg += '\tStatus:' + response.status + '\n';
-      msg += '\tResponseText:' + response.responseText;
-
-      // alert(msg);
+      if(response.responseText == '' || response.responseText == 'undefined'){
+        alert('Connection Timed Out');
+      }else{
+        var msg = '- onError -\n\n';
+        msg += '\tStatus:' + response.status + '\n';
+        msg += '\tResponseText:' + response.responseText;
+        alert(msg);
+      }
     };
 
     try {
@@ -99,7 +108,7 @@
       request = createRequestTextElement(request, seatValue);
 
       // Print order name after user name
-      if (order.name !== '') {
+      if (order.name !== '' || order.name !== order.user_id.firstName || order.name !== order.user_id.lastName) {
         request = createRequestTextElement(request, order.name);
       }
 
@@ -107,9 +116,9 @@
       var time = new Date();
       var hours = time.getHours();
       var minutes = time.getMinutes();
+      var ampm = hours > 11 ? ' PM' : ' AM';
       hours = hours % 12;
       hours = hours ? hours : 12;
-      var ampm = hours > 12 ? ' PM' : ' AM';
       minutes = minutes < 10 ? '0' + minutes : minutes;
       var currentTime = hours + ':' + minutes + ampm;
       request = createRequestTextElement(request, currentTime);
@@ -120,7 +129,14 @@
       for (var i = 0; i < order.seats.length; i++) {
         //Creates a line before each new Seat and the Seat Number
         request += builder.createRuledLineElement({thickness: 'medium'});
-        request = createRequestTextElement(request, 'Seat ' + (i + 1));
+        request = createRequestTextElement(request, 'Plate ' + (i + 1));
+
+        //Print Bowl size
+        seatValue = Orders.findBowlSize(order.seats[i]);
+        if(seatValue !== '' || seatValue !== 'undefined'){
+          seatValue = _.capitalize(seatValue) + ' Bowl';
+          request = createRequestTextElement(request, seatValue);
+        }
 
         for (var key in order.seats[i]) {
           if (key === 'double_protein') {
@@ -137,14 +153,14 @@
 
                 //If there are multiple items for one category, it will only print the category name once
                 if (lastCategory !== currentCategory) {
-                  request = createRequestTextElement(request, capitalize(currentCategory) + ':');
+                  request = createRequestTextElement(request, _.capitalize(currentCategory) + ':');
                   lastCategory = currentCategory;
                 }
 
                 //Allows variations to be added to request to Beverages, Proteins, and Signature Bowls
                 var variation = '';
                 if (order.seats[i].sortedItems[j].name === 'Beverages' || order.seats[i].sortedItems[j].name === 'Proteins' || order.seats[i].sortedItems[j].name === 'Signature Bowls')
-                  variation = capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
+                  variation = _.capitalize(order.seats[i].sortedItems[j].items[k].variation.name) + ' ';
 
                 //Allows multiple orders of an item to be printed once with a multiplier, i.e. 1x 2x 3x
                 var multiplier = '';
@@ -157,13 +173,13 @@
                   delete order.seats[i].sortedItems[j].items[k].name;
                 } else {
                   lastItem = currentItem;
-                  request = createRequestTextElement(request, '  ' + multiplier + variation + capitalize(order.seats[i].sortedItems[j].items[k].name));
+                  request = createRequestTextElement(request, '  ' + multiplier + variation + _.capitalize(order.seats[i].sortedItems[j].items[k].name));
                 }
               }
             }
           } else if (key === 'special_instructions') {
             if (order.seats[i].special_instructions !== '')
-              request = createRequestTextElement(request, 'Special Instructions: \n  ' + capitalize(order.seats[i].special_instructions));
+              request = createRequestTextElement(request, 'Special Instructions: \n  ' + _.capitalize(order.seats[i].special_instructions));
           }
         }
       }
@@ -174,17 +190,7 @@
       trader.sendMessage({request: request});
     }
     catch (e) {
-      // alert(e.message);
-    }
-
-    function capitalize(name) {
-      name = name.split(' ');
-      for (var a = 0; a < name.length; a++) {
-        name[a] = name[a].charAt(0).toUpperCase()
-          + name[a].substring(1, name[a].length).toLowerCase();
-      }
-      name = name.toString().replace(/,/g, ' ');
-      return name;
+       alert(e.message);
     }
 
     function createRequestTextElement(request, seatValue) {
@@ -205,7 +211,7 @@
       return request;
     }
   };
-  
+
   window.printOrder = printOrder;
   Orders.registerOrderNotification(printOrder);
 }());

@@ -144,24 +144,40 @@
 
     /**
      * Execute a series of calls to the printer, in order,
-     * so as to not overwhelm the printer with to many 
+     * so as to not overwhelm the printer with to many
      * responses at one time.
-     * 
+     *
      * @param orders
      */
     executeSyncPrint: function (orders) {
       if (!orders.length) return;
-    
+
       // Map orders to functions that can be called in a series.
       orders = _.map(orders, function (order) {
         return function (callback) {
-          window.printOrder(order, true, callback);  
+          window.printOrder(order, true, callback);
         };
       });
-     
+
       //run the series.
       async.series(orders);
     },
+
+    /**
+     * Find a bowl size based on the selected items.
+     *
+     * @param seat
+     * @returns {*}
+     */
+     findBowlSize: function (seat) {
+       var items = seat.selected_items,
+         signatureBowl = _.find(items, {category: {name: 'Signature Bowls'}}),
+         protein = _.find(items, {category: {name: 'Proteins'}});
+
+       if (signatureBowl) return signatureBowl.variation.name;
+       if (protein) return protein.variation.name;
+       return '';
+     },
 
     /**
      * Get the kiosk orders when the page loads.
@@ -175,7 +191,7 @@
 
       return getOrders.then(function (_orders) {
         orders = _orders;
-        
+
         if (orders.length) {
           window.disablePrint();
           me.runOrderNotifications(orders[0], true);
