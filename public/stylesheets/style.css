@@ -246,3 +246,7 @@ body.no-orders .food-signal {
 .table-striped>tbody>tr:nth-of-type(odd) {
     background-color: #3C3739;
 }
+
+.row-horizon {
+    -webkit-overflow-scrolling: touch;
+}
