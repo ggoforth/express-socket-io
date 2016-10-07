@@ -13,6 +13,7 @@
     $body = $('body'),
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
+    $debug = $('.debug'),
     $currentOrderIndex = $('.current-order-index'),
     $footer = $('footer'),
     $window = $(window),
@@ -65,6 +66,7 @@
    */
   $footer.find('.complete-order').on('click', function () {
     if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
+    debugger;
     var order = Orders.getCurrentOrder();
     if (!order) return;
 
@@ -180,6 +182,7 @@
    */
   window.renderOrder = function renderOrder(order, force) {
     if (orderRendered && !force) return;
+    $debug.text(order._id);
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1);
 

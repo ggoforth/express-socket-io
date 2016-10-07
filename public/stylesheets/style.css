@@ -21,6 +21,7 @@ header .date-time {
     font-size: 1.2em;
     line-height: 1.2em;
     font-weight: 200;
+    margin-right: 15px;
 }
 
 .modal {
@@ -40,11 +41,21 @@ header .date-time {
     color: #2B2628;
 }
 
-.printerSettings {
+.debug {
+    color: #FFFFFF;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.printerSettings,
+.completed-orders {
+    cursor: pointer;
     height: 30px;
     width: 30px;
-    display: block;
     font-size: 1.4em;
+    color: #FFFFFF;
+    display: inline-block;
+    margin-left: 20px;
 }
 
 .settings-modal {
@@ -220,7 +231,4 @@ body.no-orders .food-signal {
     display: block;
 }
 
-.printerSettings {
-    cursor: pointer;
-}
 
