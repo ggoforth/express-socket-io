@@ -102,7 +102,8 @@
       $table.append($th);
       $table.append($tb);
       $orderTable.append($table);
-
+      $body.removeClass('no-orders');
+      
       $orderColumns.append($orderTable);
     });
   });
