@@ -247,7 +247,7 @@
    */
   window.renderOrder = function renderOrder(order, force) {
     if (orderRendered && !force) return;
-    if (debug) $debug.text(order._id);
+    if (debug && order) $debug.text(order._id);
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1);
 
