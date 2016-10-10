@@ -55,6 +55,11 @@
     window.clearOrder();
     Orders.runOrderNotifications(Orders.getCurrentOrder());
     $footer.show();
+    if (Orders.numOrders()) {
+      $body.removeClass('no-orders');
+    } else {
+      $body.addClass('no-orders');
+    }
   });
 
   /**
@@ -64,6 +69,7 @@
     window.clearOrder();
     $orderHeader.text('Recently Completed Orders');
     $footer.hide();
+    $body.removeClass('no-orders');
 
     var recentOrders = $.ajax({
       url: window.locationId + '/recent-orders',
@@ -102,7 +108,6 @@
       $table.append($th);
       $table.append($tb);
       $orderTable.append($table);
-      $body.removeClass('no-orders');
       
       $orderColumns.append($orderTable);
     });
