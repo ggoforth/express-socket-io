@@ -48,6 +48,7 @@ router.get('/:locationId/recent-orders', function (req, res, next) {
     completed: {$ne: null}, // completed
     created_at: {$gte: today} // placed today
   })
+    .where('square_transaction.transaction').exists() 
     .populate('user_id')
     .exec()
     .then(orders => _.map(orders, sort))
