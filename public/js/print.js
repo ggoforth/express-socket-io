@@ -101,6 +101,7 @@
     };
 
     try {
+      console.log(order);
       request += builder.createInitializationElement({print: true});
 
       // Print user name at the top of receipt
@@ -185,6 +186,7 @@
       }
       request += '\n';
       request += builder.createRuledLineElement({thickness: 'medium'});
+      request = createRequestTextElement(request, 'Total: $'+ order.total.dollars);
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
       trader.sendMessage({request: request});
