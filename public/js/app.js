@@ -10,7 +10,7 @@
    */
   var $orderColumns = $('.order-columns'),
     PRINTERIP = 'butterfish-printerIp',
-    debug = true,
+    debug = false,
     $body = $('body'),
     $settingsModal = $('.settings-modal'),
     orderColumnsOffset = $orderColumns.offset(),
