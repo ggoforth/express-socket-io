@@ -101,7 +101,6 @@
     };
 
     try {
-      console.log(order);
       request += builder.createInitializationElement({print: true});
 
       // Print user name at the top of receipt

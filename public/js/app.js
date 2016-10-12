@@ -13,6 +13,8 @@
     debug = false,
     $body = $('body'),
     $settingsModal = $('.settings-modal'),
+    $orderViewModal = $('.order-view-modal'),
+    savedOrder = '',
     orderColumnsOffset = $orderColumns.offset(),
     $orderHeader = $('.order-header-inner'),
     $debug = $('.debug'),
@@ -36,7 +38,7 @@
   $settingsModal.find('.save').on('click', function () {
     window.printerIp = $(".printerIp").val();
     window.localStorage.setItem(PRINTERIP, window.printerIp);
-    $('#myModal').modal('toggle');
+    $('#myPrinterSettingsModal').modal('toggle');
   });
 
   /**
@@ -45,7 +47,8 @@
   $settingsModal.find('.printerIp').on('keydown', function (e) {
     if (e.keyCode === 13) {
       window.printerIp = $(".printerIp").val();
-      $('#myModal').modal('hide');
+      window.localStorage.setItem(PRINTERIP, window.printerIp);
+      $('#myPrinterSettingsModal').modal('hide');
     }
   });
 
@@ -74,7 +77,8 @@
 
     var recentOrders = $.ajax({
       url: window.locationId + '/recent-orders',
-      type: 'GET'
+      type: 'GET',
+      dataType: 'json'
     });
 
     recentOrders.then(function (orders) {
@@ -83,25 +87,42 @@
         $th = $('<thead></thead>'),
         $tb = $('<tbody></tbody>'),
         $theadRow = $('<tr></tr>');
-      
+
       _.each(['Order Name', '# Seats', 'Order Total', 'Order Date', ''], function (header) {
-        $theadRow.append('<th>' + header + '</th>'); 
+        $theadRow.append('<th>' + header + '</th>');
       });
-      
+
       $th.append($theadRow);
 
       _.each(orders, function (order) {
         var $tr = $('<tr></tr>'),
           orderDate = moment(order.created_at);
-        
+
         $tr.append('<td>' + order.name + '</td>');
         $tr.append('<td>' + order.seats.length + '</td>');
         $tr.append('<td>$' + parseFloat(order.total.dollars).toFixed(2) + '</td>');
         $tr.append('<td>' + orderDate.format('MMM. Do YYYY h:mm A') + '</td>');
-        $tr.append('<td><button class="pull-right reprint btn btn-sm">Reprint</button></td>');
+        $tr.append('<td><button class="pull-right view btn btn-sm" data-toggle="modal" data-target="#myOrderViewModal">View</button></td>');
+        $tr.append('<td class="reprintTd"><button class="pull-right reprint btn btn-sm">Reprint</button></td>');
         $tb.append($tr);
-        
-        $tr.find('.reprint').on('click', function () {
+
+        $tr.find('.view').on('click', function () {
+          savedOrder = order;
+
+          var noOfSeats = order.seats.length;
+          if(noOfSeats === 1)
+            $orderViewModal.find('.orderName').text(order.name + ' (1 Seat)');
+          else if(noOfSeats >1)
+            $orderViewModal.find('.orderName').text(order.name + ' (' + noOfSeats + ' Seats)');
+
+          $orderViewModal.find('.orderDetails').text('');
+
+          for(var i=0; i<order.seats.length; i++){
+            $orderViewModal.find('.orderDetails').addClass('col-md-2 order-view-column').append('<hr>').append(buildSeatHTML(order.seats[i]));
+          }
+        });
+
+        $tr.find('.reprint').on('click', function (e) {
           window.printOrder(order, true);
         });
       });
@@ -109,9 +130,17 @@
       $table.append($th);
       $table.append($tb);
       $orderTable.append($table);
-      
+
       $orderColumns.append($orderTable);
     });
+  });
+
+  /**
+   * When we click on Reprint from View Details Modal
+   */
+  $orderViewModal.find('.reprint').on('click', function (e) {
+    window.printOrder(savedOrder, true);
+    savedOrder = '';
   });
 
   /**
