@@ -102,7 +102,7 @@ header .date-time {
 
 .order-column ul.seat .bowl-size,
 .order-view-column ul.seat .bowl-size {
-    margin: 0 0 20px;
+    margin: 0 0 10px;
     width: 50px;
     height: 50px;
     border: 3px solid #FFB07B;
@@ -135,6 +135,13 @@ header .date-time {
     font-size: 1.3em;
 }
 
+.double-protein {
+  display: block;
+  font-size: 1em;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
 .order-column ul.seat ul.items,
 .order-view-column ul.seat ul.items {
     list-style-type: none;
@@ -163,7 +170,8 @@ header .date-time {
   color: #2B2628;
 }
 
-.order-view-column .bowl-size-text {
+.order-view-column .bowl-size-text,
+.order-view-column .double-protein {
   color: #2B2628;
 }
 
@@ -251,10 +259,6 @@ body.no-orders .food-signal {
 .reprint, .view {
     background-color: #FFB07B;
 }
-
-/*.view {
-  margin-left: none;
-}*/
 
 .reprintTd {
     width: 100px;

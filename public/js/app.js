@@ -190,10 +190,15 @@
   function buildSeatHTML(seat) {
     var $cont = $('<div></div>'),
       $seat = $('<ul></ul>').addClass('seat'),
-      $order = $('<li><div class="bowl-size"><div class="bowl-size-inner"></div></div><span class="bowl-size-text">' + _.capitalize(Orders.findBowlSize(seat)) + ' Bowl</span> </li>'),
+      $order = $('<li><div><div class="bowl-size"><div class="bowl-size-inner"></div></div><span class="bowl-size-text">' + _.capitalize(Orders.findBowlSize(seat)) + ' Bowl</span></div> </li>'),
+      $doubleProtein = $('<div class="double-protein"></div>'),
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
 
+    if(seat.double_protein)
+      $doubleProtein.text('Double Protein');
+
+    $order.append($doubleProtein);
     $order.append($items);
     $seat.append($order);
 
