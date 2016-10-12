@@ -21,51 +21,64 @@ header .date-time {
     font-size: 1.2em;
     line-height: 1.2em;
     font-weight: 200;
+    margin-right: 15px;
 }
 
-.modal{
-  padding-top: 90px;
+.modal {
+    padding-top: 90px;
 }
 
-.modal-content{
-  background-color: #FFB07B;
+.modal-content {
 }
 
-.modal-dialog{
-  max-width:200px;
-  padding-top:10px;
-  background-color: inherit;
+.modal-dialog {
+    max-width: 400px;
+    padding-top: 10px;
+    background-color: inherit;
 }
 
-.modal-title{
-  color:#2B2628;
-  text-align:center;
+.modal-title {
+    color: #2B2628;
 }
 
-.printerSettings{
-  height: 30px;
-  width: 30px;
-  display: block;
-  font-size: 1.4em;
+.debug {
+    color: #FFFFFF;
+    display: inline-block;
+    margin-left: 15px;
 }
 
-.save{
-  background-color: #2B2628;
-  color: white;
-  text-align: center;
-  box-shadow: none;
-  border: 0px solid transparent;
-  border-radius: 5px;
-  padding: 5px;
-  display: inline-block;
+.printerSettings,
+.completed-orders {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    font-size: 1.4em;
+    color: #FFFFFF;
+    display: inline-block;
+    margin-left: 20px;
 }
 
-.save:hover{
-  background-color: white;
-  color: #2B2628;
+.settings-modal {
+    text-align: left;
 }
 
-.order-columns {
+.save {
+    background-color: #FFB07B;
+    color: white;
+    text-align: center;
+    box-shadow: none;
+    border: 0px solid transparent;
+    border-radius: 5px;
+    padding: 5px;
+    display: inline-block;
+}
+
+.save:hover {
+    color: #FFFFFF;
+    background-color: #FFB07B;
+}
+
+.order-columns, .order-view-column {
     color: #FFFFFF;
     margin-top: 0;
 }
@@ -81,13 +94,14 @@ header .date-time {
     background-color: #383335;
 }
 
-.order-column ul.seat {
+.order-column ul.seat, .order-view-column ul.seat{
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.order-column ul.seat .bowl-size {
+.order-column ul.seat .bowl-size,
+.order-view-column ul.seat .bowl-size {
     margin: 0 0 20px;
     width: 50px;
     height: 50px;
@@ -102,7 +116,8 @@ header .date-time {
     float: left;
 }
 
-.order-column ul.seat .bowl-size .bowl-size-inner {
+.order-column ul.seat .bowl-size .bowl-size-inner,
+.order-view-column ul.seat .bowl-size .bowl-size-inner {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
@@ -120,18 +135,21 @@ header .date-time {
     font-size: 1.3em;
 }
 
-.order-column ul.seat ul.items {
+.order-column ul.seat ul.items,
+.order-view-column ul.seat ul.items {
     list-style-type: none;
     margin: 10px 0 0 0;
     padding: 0;
     clear: both;
 }
 
-.order-column ul.seat ul.items li {
+.order-column ul.seat ul.items li,
+.order-view-column ul.seat ul.items li {
     color: #E8A170;
 }
 
-.order-column ul.seat ul.items ul.step-items {
+.order-column ul.seat ul.items ul.step-items,
+.order-view-column ul.seat ul.items ul.step-items {
     list-style-type: none;
     margin: 3px 0 25px 0;
     padding: 0;
@@ -139,6 +157,14 @@ header .date-time {
 
 .order-column ul.seat ul.items ul.step-items li {
     color: #FFFFFF;
+}
+
+.order-view-column ul.seat ul.items ul.step-items li {
+  color: #2B2628;
+}
+
+.order-view-column .bowl-size-text {
+  color: #2B2628;
 }
 
 .orders-waiting {
@@ -218,3 +244,34 @@ body.no-orders .food-signal {
     display: block;
 }
 
+.recent-orders {
+    padding: 15px;
+}
+
+.reprint, .view {
+    background-color: #FFB07B;
+}
+
+/*.view {
+  margin-left: none;
+}*/
+
+.reprintTd {
+    width: 100px;
+}
+
+.reprint {
+  margin-left: 20px;
+}
+
+.recent-orders thead th {
+    color: #FFB07B;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #3C3739;
+}
+
+.row-horizon {
+    -webkit-overflow-scrolling: touch;
+}

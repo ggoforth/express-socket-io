@@ -22,11 +22,33 @@ router.get('/:locationId', function (req, res) {
  * Get orders for a location
  */
 router.get('/:locationId/orders', function (req, res, next) {
+  let today = moment().startOf('day').toDate();
+  
   Order.find({
     location_id: req.params.locationId,
     completed: null, // not yet complete
-    created_at: {$gte: moment().startOf('day').toDate()} // placed today
+    created_at: {$gte: today} // placed today
   })
+    .populate('user_id')
+    .exec()
+    .then(orders => _.map(orders, sort))
+    .then(orders => {
+      res.json(orders);
+    });
+});
+
+/**
+ * Get recently closed orders for a location
+ */
+router.get('/:locationId/recent-orders', function (req, res, next) {
+  let today = moment().startOf('day').toDate();
+
+  Order.find({
+    location_id: req.params.locationId,
+    completed: {$ne: null}, // completed
+    created_at: {$gte: today} // placed today
+  })
+    .where('square_transaction.transaction').exists() 
     .populate('user_id')
     .exec()
     .then(orders => _.map(orders, sort))
