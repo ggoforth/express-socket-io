@@ -172,8 +172,10 @@
      findBowlSize: function (seat) {
        var items = seat.selected_items,
          signatureBowl = _.find(items, {category: {name: 'Signature Bowls'}}),
-         protein = _.find(items, {category: {name: 'Proteins'}});
+         protein = _.find(items, {category: {name: 'Proteins'}}),
+         greenMix = _.find(items, {name: 'Green Mix'});
 
+       if (greenMix) return 'Salad';
        if (signatureBowl) return signatureBowl.variation.name;
        if (protein) return protein.variation.name;
        return '';
