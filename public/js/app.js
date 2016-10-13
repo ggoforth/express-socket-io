@@ -158,30 +158,6 @@
   });
 
   /**
-   * Complete an order.
-   */
-  $footer.find('.complete-order').on('click', function () {
-    if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
-    var order = Orders.getCurrentOrder();
-    if (!order) return;
-
-    var markCompleted = $.ajax({
-      url: '/' + window.locationId + '/complete-order/' + order._id,
-      type: 'GET'
-    });
-
-    markCompleted.then(function () {
-      window.clearOrder();
-      Orders.removeCurrentOrder();
-      if (!Orders.numOrders()) {
-        $body.addClass('no-orders');
-      } else {
-        $body.removeClass('no-orders');
-      }
-    });
-  });
-
-  /**
    * Build out one seat for the order display.
    *
    * @param seat
@@ -264,6 +240,42 @@
 
     //Stick the column in the dom and trigger a layout
     $orderColumns.append($column);
+  }
+
+  /**
+   * Confirmation for complete order
+   */
+   $(document).ready(function(){
+     $('[data-toggle="confirmation"]').confirmation({
+       rootSelector: '[data-toggle="confirmation"]',
+       onConfirm: function(){
+         completeOrder();
+       }
+     });
+   });
+
+  /**
+   * Complete an order.
+   */
+  function completeOrder(){
+    console.log('hi there');
+    var order = Orders.getCurrentOrder();
+    if (!order) return;
+
+    var markCompleted = $.ajax({
+      url: '/' + window.locationId + '/complete-order/' + order._id,
+      type: 'GET'
+    });
+
+    markCompleted.then(function () {
+      window.clearOrder();
+      Orders.removeCurrentOrder();
+      if (!Orders.numOrders()) {
+        $body.addClass('no-orders');
+      } else {
+        $body.removeClass('no-orders');
+      }
+    });
   }
 
   /**

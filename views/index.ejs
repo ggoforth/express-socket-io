@@ -48,7 +48,13 @@
 </div>
 
 <footer class="actions text-center">
-    <button class="btn btn-lg btn-default complete-order">Complete This Order</button>
+    <button class="btn btn-lg btn-default complete-order" data-placement="top"
+            data-toggle="confirmation" data-popout="true"
+            data-title="Are you sure this order is complete?"
+            data-btn-ok-label="Yes" data-btn-ok-icon="glyphicon glyphicon-ok"
+            data-btn-ok-class="btn-ok" data-on-confirm=""
+            data-btn-cancel-label="No" data-btn-cancel-icon="glyphicon glyphicon-remove"
+            data-btn-cancel-class="btn-cancel">Complete This Order</button>
     <i class="fa fa-chevron-circle-left previous pull-left"></i>
     <i class="fa fa-chevron-circle-right next pull-right"></i>
 </footer>
@@ -56,6 +62,7 @@
 <div class="food-signal">&nbsp;</div>
 
 <!-- Modals -->
+<!-- Printer Settings Modal -->
 <div class="modal fade settings-modal"
      id="myPrinterSettingsModal"
      tabindex="-1"
@@ -93,6 +100,7 @@
         </div>
     </div>
 </div>
+<!-- Modal to view order details on recently completed orders state -->
 <div class="modal fade order-view-modal"
      id="myOrderViewModal"
      tabindex="-1"
@@ -138,6 +146,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/assets/mousetrap/mousetrap.min.js"></script>
 <script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/assets/Bootstrap-Confirmation/bootstrap-confirmation.js"></script>
 <script src="/js/StarWebPrintBuilder.js"></script>
 <script src="/js/StarWebPrintTrader.js"></script>
 
