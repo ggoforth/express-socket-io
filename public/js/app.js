@@ -214,8 +214,10 @@
 
       _.forOwn(itemGroup, function (items, itemName) {
         var _item = '';
+        if (items[0].category.name === 'Beverages')
+          itemName = items[0].variation.name + ' ' + itemName;
         if (items.length > 1) _item += ' ' + items.length + ' x ';
-        _item += itemName;
+          _item += itemName;
         $header.find('.step-items').append('<li>' + _item + '</li>');
       });
     });
