@@ -258,7 +258,6 @@
    * Complete an order.
    */
   function completeOrder(){
-    console.log('hi there');
     var order = Orders.getCurrentOrder();
     if (!order) return;
 
