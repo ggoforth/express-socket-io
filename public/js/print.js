@@ -133,7 +133,7 @@
 
         //Print Bowl size
         seatValue = Orders.findBowlSize(order.seats[i]);
-        if(seatValue !== '' || seatValue !== 'undefined'){
+        if(seatValue !== '' && seatValue !== 'undefined'){
           seatValue = capitalize(seatValue) + ' Bowl';
           request = createRequestTextElement(request, seatValue);
         }
