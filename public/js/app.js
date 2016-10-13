@@ -195,12 +195,16 @@
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
 
-    if(seat.double_protein)
+    if (seat.double_protein)
       $doubleProtein.text('Double Protein');
 
-    $order.append($doubleProtein);
-    $order.append($items);
-    $seat.append($order);
+    if (!Orders.findBowlSize(seat)){
+      $seat.append($items);
+    } else {
+      $doubleProtein.append($items);
+      $order.append($doubleProtein);
+      $seat.append($order);
+    }
 
     _.forOwn(items, function (items, step) {
       if (!items.length) return;
@@ -214,6 +218,8 @@
 
       _.forOwn(itemGroup, function (items, itemName) {
         var _item = '';
+        if (items[0].category.name === 'Beverages')
+          itemName = items[0].variation.name + ' ' + itemName;
         if (items.length > 1) _item += ' ' + items.length + ' x ';
         _item += itemName;
         $header.find('.step-items').append('<li>' + _item + '</li>');
@@ -233,11 +239,14 @@
    */
   function orderHeaderHTML(order) {
     if (!order) return '';
-    var $orderHeader = $('<div></div>');
+    var $orderHeader = $('<div></div>'),
+      seatOrSeats;
+
+    order.seats.length === 1 ? seatOrSeats = ' Seat' : seatOrSeats = ' Seats';
 
     $orderHeader.append('<span class="pull-right">' + moment().format('h:mm A') + '</span>');
     if (order.name) $orderHeader.append('<span class="order-name">' + order.name + '</span>');
-    if (order.seats.length) $orderHeader.append('<span class="num-seats">' + order.seats.length + ' Seats</span>');
+    if (order.seats.length) $orderHeader.append('<span class="num-seats">' + order.seats.length + seatOrSeats + '</span>');
 
     return $orderHeader.html();
   }
