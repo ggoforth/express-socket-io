@@ -33,7 +33,7 @@
                 <i class="pull-right completed-orders fa fa-list"></i>
                 <i class="pull-right printerSettings fa fa-gear"
                    data-toggle="modal"
-                   data-target="#myModal"></i>
+                   data-target="#myPrinterSettingsModal"></i>
             </div>
 
             <div class="date-time pull-right"></div>
@@ -57,7 +57,7 @@
 
 <!-- Modals -->
 <div class="modal fade settings-modal"
-     id="myModal"
+     id="myPrinterSettingsModal"
      tabindex="-1"
      role="dialog">
     <div class="modal-dialog"
@@ -89,6 +89,38 @@
                 <button type="button"
                         class="save btn-primary">Save changes
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade order-view-modal"
+     id="myOrderViewModal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">Order Details</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <h4 class="orderName"></h4>
+                            <div class="orderDetails" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="pull-right reprint btn btn-sm">Reprint</button>
             </div>
         </div>
     </div>

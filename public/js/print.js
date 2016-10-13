@@ -101,7 +101,6 @@
     };
 
     try {
-      console.log(order);
       request += builder.createInitializationElement({print: true});
 
       // Print user name at the top of receipt
@@ -214,8 +213,8 @@
         emphasis: false,
         invert: false,
         linespace: 32,
-        width: 1,
-        height: 1,
+        width: 2,
+        height: 2,
         font: 'font_a',
         underline: false,
         data: seatValue.toString() + '\n'
