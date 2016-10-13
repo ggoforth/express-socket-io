@@ -221,7 +221,7 @@
         if (items[0].category.name === 'Beverages')
           itemName = items[0].variation.name + ' ' + itemName;
         if (items.length > 1) _item += ' ' + items.length + ' x ';
-          _item += itemName;
+        _item += itemName;
         $header.find('.step-items').append('<li>' + _item + '</li>');
       });
     });
@@ -243,7 +243,7 @@
       seatOrSeats;
 
     order.seats.length === 1 ? seatOrSeats = ' Seat' : seatOrSeats = ' Seats';
-    
+
     $orderHeader.append('<span class="pull-right">' + moment().format('h:mm A') + '</span>');
     if (order.name) $orderHeader.append('<span class="order-name">' + order.name + '</span>');
     if (order.seats.length) $orderHeader.append('<span class="num-seats">' + order.seats.length + seatOrSeats + '</span>');
