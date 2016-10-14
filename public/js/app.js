@@ -76,7 +76,7 @@
     $body.removeClass('no-orders');
 
     var recentOrders = $.ajax({
-      url: window.locationId + '/recent-orders',
+      url: '/' + window.locationId + '/recent-orders',
       type: 'GET',
       dataType: 'json'
     });
