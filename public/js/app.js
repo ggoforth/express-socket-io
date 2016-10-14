@@ -291,17 +291,18 @@
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1);
 
-    $orderHeader.html(orderHeaderContent);
+    if($orderHeader[0].childNodes[0].data !== 'Recently Completed Orders'){
+      if (order) {
+        _.each(order.seats, renderColumn.bind({}, order));
+        orderRendered = true;
+      } else {
+        orderRendered = false;
+      }
 
-    if (order) {
-      _.each(order.seats, renderColumn.bind({}, order));
-      orderRendered = true;
-    } else {
-      orderRendered = false;
+      $orderHeader.html(orderHeaderContent);
+      $window.trigger('layout-columns');
+      $body.removeClass('no-orders');
     }
-
-    $window.trigger('layout-columns');
-    $body.removeClass('no-orders');
   };
 
   /**
