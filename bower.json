@@ -22,6 +22,6 @@
     "moment": "^2.14.1",
     "mousetrap": "^1.6.0",
     "async": "^2.0.1",
-    "Bootstrap-Confirmation": "*"
+    "bootstrap-confirmation2": "^2.4.0"
   }
 }

@@ -245,10 +245,13 @@
   /**
    * Confirmation for complete order
    */
-   $(document).ready(function(){
+   $(document).ready(function() {
+     console.log("in here");
      $('[data-toggle="confirmation"]').confirmation({
        rootSelector: '[data-toggle="confirmation"]',
+       trigger: 'click',
        onConfirm: function(){
+         console.log("on Confirm");
          completeOrder();
        }
      });
@@ -258,6 +261,7 @@
    * Complete an order.
    */
   function completeOrder(){
+    console.log("in function");
     var order = Orders.getCurrentOrder();
     if (!order) return;
 
