@@ -19,6 +19,34 @@
   };
 
   /**
+   * Disable printing for a given function.
+   * 
+   * @param cb
+   */
+  window.disablePrintFor = function disablePrintFor(cb) {
+    disablePrint();
+    cb();
+    enablePrint();
+  };
+
+  /**
+   * Async version of disable print for.
+   * 
+   * @param cb
+   */
+  window.disablePrintForAsync = function disablePrintForAsync(cb) {
+    disablePrint();
+    var asyncCallback = cb();
+    
+    if (_.isFunction(async.then)) {
+      throw new Error('disablePrintForAsync callback (cb) must return a promise');
+    }
+    
+    asyncCallback
+      .then(enablePrint);
+  };
+  
+  /**
    * Print an order.
    *
    * @param order
