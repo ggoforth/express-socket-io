@@ -20,7 +20,7 @@
 
   /**
    * Disable printing for a given function.
-   * 
+   *
    * @param cb
    */
   window.disablePrintFor = function disablePrintFor(cb) {
@@ -31,21 +31,21 @@
 
   /**
    * Async version of disable print for.
-   * 
+   *
    * @param cb
    */
   window.disablePrintForAsync = function disablePrintForAsync(cb) {
     disablePrint();
     var asyncCallback = cb();
-    
+
     if (_.isFunction(async.then)) {
       throw new Error('disablePrintForAsync callback (cb) must return a promise');
     }
-    
+
     asyncCallback
       .then(enablePrint);
   };
-  
+
   /**
    * Print an order.
    *
@@ -120,7 +120,7 @@
     trader.onError = function (response) {
       if(response.responseText == '' || response.responseText == 'undefined'){
         console.log(response);
-        alert('Connection Timed Out');
+        alert('Printer Connection Timed Out');
       }else{
         var msg = '- onError -\n\n';
         msg += '\tStatus:' + response.status + '\n';
