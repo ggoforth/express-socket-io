@@ -77,7 +77,11 @@
       _.remove(orders, this.getOrderByIndex(this.currentOrderIndex));
       this.currentOrderIndex = Math.max(--this.currentOrderIndex, 0);
       var nextOrder = this.getOrderByIndex(this.currentOrderIndex);
-      this.runOrderNotifications(nextOrder);
+      window.disablePrintFor(function () {
+        this.runOrderNotifications(nextOrder);
+      });
+
+  //    window.enablePrint();
     },
 
     /**
@@ -198,7 +202,7 @@
           window.disablePrintFor(function () {
             me.runOrderNotifications(orders[0], true);
           });
-          
+
           me.executeSyncPrint(orders);
         }
       });
