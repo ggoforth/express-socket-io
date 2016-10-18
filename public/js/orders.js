@@ -195,9 +195,10 @@
         orders = _orders;
 
         if (orders.length) {
-          window.disablePrint();
-          me.runOrderNotifications(orders[0], true);
-          window.enablePrint();
+          window.disablePrintFor(function () {
+            me.runOrderNotifications(orders[0], true);
+          });
+          
           me.executeSyncPrint(orders);
         }
       });
