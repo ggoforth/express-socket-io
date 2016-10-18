@@ -62,7 +62,7 @@ header .date-time {
     text-align: left;
 }
 
-.save {
+.save, .btn-ok, .btn-cancel {
     background-color: #FFB07B;
     color: white;
     text-align: center;
@@ -73,10 +73,26 @@ header .date-time {
     display: inline-block;
 }
 
-.save:hover {
+.btn-ok, .btn-cancel {
+  background-color: white;
+}
+
+/*.save:hover {
     color: #FFFFFF;
     background-color: #FFB07B;
+}*/
+
+.btn-ok:hover, .btn-cancel:hover{
+  color: #FFFFFF;
 }
+
+/*.confirmationPopover {
+  margin: 0 auto;
+  width: 90%;
+  padding-left: 10px;
+  padding-right: 10px;
+  align-self: center;
+}*/
 
 .order-columns, .order-view-column {
     color: #FFFFFF;

@@ -76,7 +76,7 @@
     $body.removeClass('no-orders');
 
     var recentOrders = $.ajax({
-      url: window.locationId + '/recent-orders',
+      url: '/' + window.locationId + '/recent-orders',
       type: 'GET',
       dataType: 'json'
     });
@@ -158,30 +158,6 @@
   });
 
   /**
-   * Complete an order.
-   */
-  $footer.find('.complete-order').on('click', function () {
-    if (Orders.numOrders() && !confirm('Are you sure this order is complete?')) return;
-    var order = Orders.getCurrentOrder();
-    if (!order) return;
-
-    var markCompleted = $.ajax({
-      url: '/' + window.locationId + '/complete-order/' + order._id,
-      type: 'GET'
-    });
-
-    markCompleted.then(function () {
-      window.clearOrder();
-      Orders.removeCurrentOrder();
-      if (!Orders.numOrders()) {
-        $body.addClass('no-orders');
-      } else {
-        $body.removeClass('no-orders');
-      }
-    });
-  });
-
-  /**
    * Build out one seat for the order display.
    *
    * @param seat
@@ -195,12 +171,16 @@
       $items = $('<ul></ul>').addClass('items'),
       items = _.groupBy(seat.selected_items, 'category.name');
 
-    if(seat.double_protein)
+    if (seat.double_protein)
       $doubleProtein.text('Double Protein');
 
-    $order.append($doubleProtein);
-    $order.append($items);
-    $seat.append($order);
+    if (!Orders.findBowlSize(seat)){
+      $seat.append($items);
+    } else {
+      $doubleProtein.append($items);
+      $order.append($doubleProtein);
+      $seat.append($order);
+    }
 
     _.forOwn(items, function (items, step) {
       if (!items.length) return;
@@ -214,6 +194,8 @@
 
       _.forOwn(itemGroup, function (items, itemName) {
         var _item = '';
+        if (items[0].category.name === 'Beverages')
+          itemName = items[0].variation.name + ' ' + itemName;
         if (items.length > 1) _item += ' ' + items.length + ' x ';
         _item += itemName;
         $header.find('.step-items').append('<li>' + _item + '</li>');
@@ -233,11 +215,14 @@
    */
   function orderHeaderHTML(order) {
     if (!order) return '';
-    var $orderHeader = $('<div></div>');
+    var $orderHeader = $('<div></div>'),
+      seatOrSeats;
+
+    order.seats.length === 1 ? seatOrSeats = ' Seat' : seatOrSeats = ' Seats';
 
     $orderHeader.append('<span class="pull-right">' + moment().format('h:mm A') + '</span>');
     if (order.name) $orderHeader.append('<span class="order-name">' + order.name + '</span>');
-    if (order.seats.length) $orderHeader.append('<span class="num-seats">' + order.seats.length + ' Seats</span>');
+    if (order.seats.length) $orderHeader.append('<span class="num-seats">' + order.seats.length + seatOrSeats + '</span>');
 
     return $orderHeader.html();
   }
@@ -258,6 +243,42 @@
   }
 
   /**
+   * Confirmation for complete order
+   */
+   $(document).ready(function() {
+     $('[data-toggle="confirmation"]').confirmation({
+       rootSelector: '[data-toggle="confirmation"]',
+       trigger: 'click',
+       onConfirm: function(){
+         completeOrder();
+       }
+     });
+   });
+
+  /**
+   * Complete an order.
+   */
+  function completeOrder(){
+    var order = Orders.getCurrentOrder();
+    if (!order) return;
+
+    var markCompleted = $.ajax({
+      url: '/' + window.locationId + '/complete-order/' + order._id,
+      type: 'GET'
+    });
+
+    markCompleted.then(function () {
+      window.clearOrder();
+      Orders.removeCurrentOrder();
+      if (!Orders.numOrders()) {
+        $body.addClass('no-orders');
+      } else {
+        $body.removeClass('no-orders');
+      }
+    });
+  }
+
+  /**
    * Responsible for rendering an order on the screen. It is possible for order to be null,
    * in cases where we've removed or completed the last order in the stack.
    *
@@ -270,17 +291,18 @@
     var orderHeaderContent = orderHeaderHTML(order);
     $currentOrderIndex.text(Orders.getOrderIndex(order) + 1);
 
-    $orderHeader.html(orderHeaderContent);
+    if($orderHeader[0].childNodes[0].data !== 'Recently Completed Orders'){
+      if (order) {
+        _.each(order.seats, renderColumn.bind({}, order));
+        orderRendered = true;
+      } else {
+        orderRendered = false;
+      }
 
-    if (order) {
-      _.each(order.seats, renderColumn.bind({}, order));
-      orderRendered = true;
-    } else {
-      orderRendered = false;
+      $orderHeader.html(orderHeaderContent);
+      $window.trigger('layout-columns');
+      $body.removeClass('no-orders');
     }
-
-    $window.trigger('layout-columns');
-    $body.removeClass('no-orders');
   };
 
   /**
