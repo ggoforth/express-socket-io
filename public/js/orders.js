@@ -74,14 +74,13 @@
      * Remove the current order form the screen.
      */
     removeCurrentOrder: function () {
+      var me = this;
       _.remove(orders, this.getOrderByIndex(this.currentOrderIndex));
       this.currentOrderIndex = Math.max(--this.currentOrderIndex, 0);
       var nextOrder = this.getOrderByIndex(this.currentOrderIndex);
       window.disablePrintFor(function () {
-        this.runOrderNotifications(nextOrder);
+        me.runOrderNotifications(nextOrder);
       });
-
-  //    window.enablePrint();
     },
 
     /**
