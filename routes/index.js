@@ -23,12 +23,13 @@ router.get('/:locationId', function (req, res) {
  */
 router.get('/:locationId/orders', function (req, res, next) {
   let today = moment().startOf('day').toDate();
-  
+
   Order.find({
     location_id: req.params.locationId,
     completed: null, // not yet complete
     created_at: {$gte: today} // placed today
   })
+    .where('square_transaction.transaction').exists() 
     .populate('user_id')
     .exec()
     .then(orders => _.map(orders, sort))
@@ -48,7 +49,7 @@ router.get('/:locationId/recent-orders', function (req, res, next) {
     completed: {$ne: null}, // completed
     created_at: {$gte: today} // placed today
   })
-    .where('square_transaction.transaction').exists() 
+    .where('square_transaction.transaction').exists()
     .populate('user_id')
     .exec()
     .then(orders => _.map(orders, sort))
@@ -61,7 +62,7 @@ router.get('/:locationId/recent-orders', function (req, res, next) {
  * When a new order comes in.
  */
 function getOrder(req, res, next) {
-  let orderId = req.method.toLowerCase() === 'post' ? 
+  let orderId = req.method.toLowerCase() === 'post' ?
     req.body.orderId : req.params.orderId,
     location_id = req.params.locationId;
 
@@ -76,15 +77,15 @@ function getOrder(req, res, next) {
         .emit('newOrder', order);
     })
     .catch(err => {
-      next(err); 
+      next(err);
     });
-  
+
   res.sendStatus(200);
 }
 
 /**
  * Mark an order as completed.
- * 
+ *
  * @param req
  * @param res
  * @param next
@@ -98,7 +99,7 @@ function getCompleteOrder(req, res, next) {
       order.completed = Date.now();
       order.save()
         .then(() => {
-          res.send(order); 
+          res.send(order);
         });
     });
 }
