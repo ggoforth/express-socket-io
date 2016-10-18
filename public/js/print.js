@@ -91,6 +91,7 @@
 
     trader.onError = function (response) {
       if(response.responseText == '' || response.responseText == 'undefined'){
+        console.log(response);
         alert('Connection Timed Out');
       }else{
         var msg = '- onError -\n\n';
