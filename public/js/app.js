@@ -104,7 +104,12 @@
         $tr.append('<td>' + orderDate.format('MMM. Do YYYY h:mm A') + '</td>');
         $tr.append('<td><button class="pull-right view btn btn-sm" data-toggle="modal" data-target="#myOrderViewModal">View</button></td>');
         $tr.append('<td class="reprintTd"><button class="pull-right reprint btn btn-sm">Reprint</button></td>');
-        $tb.append($tr);
+        
+        if (_.indexOf(orders, order) === 0) {
+          $tb.append($tr);
+        } else {
+          $tb.prepend($tr);
+        }
 
         $tr.find('.view').on('click', function () {
           savedOrder = order;
