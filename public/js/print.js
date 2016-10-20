@@ -214,7 +214,7 @@
       }
       request += '\n';
       request += builder.createRuledLineElement({thickness: 'medium'});
-      request = createRequestTextElement(request, 'Total: $'+ (order.total.amount/100).toFixed(2));
+      request = createRequestTextElement(request, 'Total: $'+ (order.total.applied_tax/100).toFixed(2));
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
       trader.sendMessage({request: request});
