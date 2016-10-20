@@ -74,10 +74,13 @@
      * Remove the current order form the screen.
      */
     removeCurrentOrder: function () {
+      var me = this;
       _.remove(orders, this.getOrderByIndex(this.currentOrderIndex));
       this.currentOrderIndex = Math.max(--this.currentOrderIndex, 0);
       var nextOrder = this.getOrderByIndex(this.currentOrderIndex);
-      this.runOrderNotifications(nextOrder);
+      window.disablePrintFor(function () {
+        me.runOrderNotifications(nextOrder);
+      });
     },
 
     /**
@@ -195,9 +198,10 @@
         orders = _orders;
 
         if (orders.length) {
-          window.disablePrint();
-          me.runOrderNotifications(orders[0], true);
-          window.enablePrint();
+          window.disablePrintFor(function () {
+            me.runOrderNotifications(orders[0], true);
+          });
+
           me.executeSyncPrint(orders);
         }
       });

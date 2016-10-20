@@ -19,6 +19,34 @@
   };
 
   /**
+   * Disable printing for a given function.
+   *
+   * @param cb
+   */
+  window.disablePrintFor = function disablePrintFor(cb) {
+    disablePrint();
+    cb();
+    enablePrint();
+  };
+
+  /**
+   * Async version of disable print for.
+   *
+   * @param cb
+   */
+  window.disablePrintForAsync = function disablePrintForAsync(cb) {
+    disablePrint();
+    var asyncCallback = cb();
+
+    if (_.isFunction(async.then)) {
+      throw new Error('disablePrintForAsync callback (cb) must return a promise');
+    }
+
+    asyncCallback
+      .then(enablePrint);
+  };
+
+  /**
    * Print an order.
    *
    * @param order
@@ -91,7 +119,8 @@
 
     trader.onError = function (response) {
       if(response.responseText == '' || response.responseText == 'undefined'){
-        alert('Connection Timed Out');
+        console.log(response);
+        alert('Printer Connection Timed Out');
       }else{
         var msg = '- onError -\n\n';
         msg += '\tStatus:' + response.status + '\n';
@@ -185,7 +214,7 @@
       }
       request += '\n';
       request += builder.createRuledLineElement({thickness: 'medium'});
-      request = createRequestTextElement(request, 'Total: $'+ (order.total.amount/100).toFixed(2));
+      request = createRequestTextElement(request, 'Total: $'+ (order.total.applied_tax/100).toFixed(2));
       request += builder.createFeedElement({line: 2});
       request += builder.createCutPaperElement({type: 'partial'});
       trader.sendMessage({request: request});
