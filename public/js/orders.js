@@ -3,7 +3,8 @@
   'use strict';
 
   var socket = io.connect(),
-    orders = [];
+    orders = [],
+    newOrder = false;
 
   /**
    * Join a given room.
@@ -22,6 +23,7 @@
    * the order object from the server.
    */
   socket.on('newOrder', function (order) {
+    newOrder = true;
     Orders.storeOrder(order);
     Orders.runOrderNotifications(order);
   });
@@ -202,7 +204,9 @@
             me.runOrderNotifications(orders[0], true);
           });
 
-          me.executeSyncPrint(orders);
+          if(newOrder){
+            me.executeSyncPrint(orders);
+          }
         }
       });
     }
