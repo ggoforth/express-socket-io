@@ -3,8 +3,14 @@
   'use strict';
 
   var socket = io.connect(),
-    orders = [],
-    newOrder = false;
+    orders = [];
+
+ /**
+  * Set 'is_reloaded' key in sessionStorage
+  */
+  window.onbeforeunload = function(e){
+    sessionStorage.setItem('is_reloaded', true);
+  };
 
   /**
    * Join a given room.
@@ -23,7 +29,6 @@
    * the order object from the server.
    */
   socket.on('newOrder', function (order) {
-    newOrder = true;
     Orders.storeOrder(order);
     Orders.runOrderNotifications(order);
   });
@@ -204,7 +209,7 @@
             me.runOrderNotifications(orders[0], true);
           });
 
-          if(newOrder){
+          if(!sessionStorage.getItem('is_reloaded')){
             me.executeSyncPrint(orders);
           }
         }
