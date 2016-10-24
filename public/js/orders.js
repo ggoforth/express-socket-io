@@ -5,13 +5,6 @@
   var socket = io.connect(),
     orders = [];
 
- /**
-  * Set 'is_reloaded' key in sessionStorage
-  */
-  window.onbeforeunload = function(e){
-    sessionStorage.setItem('is_reloaded', true);
-  };
-
   /**
    * Join a given room.
    */
@@ -210,9 +203,7 @@
             me.runOrderNotifications(orders[0], true);
           });
 
-          if(!sessionStorage.getItem('is_reloaded')){
-            me.executeSyncPrint(orders);
-          }
+          me.executeSyncPrint(orders);
         }
       });
     }
