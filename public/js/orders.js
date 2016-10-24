@@ -22,7 +22,6 @@
    * the order object from the server.
    */
   socket.on('newOrder', function (order) {
-    sessionStorage.removeItem('is_reloaded');
     Orders.storeOrder(order);
     Orders.runOrderNotifications(order);
   });
