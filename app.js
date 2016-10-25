@@ -1,76 +1,86 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var http = require('http');
+'use strict';
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+let express = require('express'),
+  path = require('path'),
+  favicon = require('serve-favicon'),
+  logger = require('morgan'),
+  cookieParser = require('cookie-parser'),
+  bodyParser = require('body-parser'),
+  http = require('http'),
+  app = express(),
+  server = http.createServer(app),
+  db = require('./modules/db'),
+  io = require('socket.io')(server),
+  routes,
+  users;
 
-var app = express();
-var server = http.createServer(app);
-var io = require('socket.io')(server);
+/**
+ * Initialize database connection and models.
+ */
+db.init()
+  .then((db) => {
+    /**
+     * When we get the io connection set up socket listeners for
+     * joining of specific locations.
+     */
+    io.on('connection', (socket) => {
+      console.log('user connected');
 
-io.on('connection', (socket) => {
-  console.log('user connected');
-  
-  socket.on('welcome other users', function (data) {
-    io.sockets.emit('welcome other users', 'Welcome to our website!');
-  });
-});
+      socket.on('join location', locationId => {
+        console.log(`User joined location ${locationId}`);
 
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+        // Join a specified location.
+        socket.join(locationId);
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+        // Emit a message that the room was joined.
+        io.sockets
+          .in(locationId)
+          .emit('room joined', {locationId: locationId});
+      });
+    });
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+    /**
+     * Stick the io instance onto the request so route code can
+     * access it.
+     */
+    app.use((req, res, next) => {
+      req.io = io;
+      next();
+    });
 
-app.use('/', routes);
-app.use('/users', users);
+    app.set('views', path.join(__dirname, 'views'));
+    app.set('view engine', 'ejs');
+    app.use(logger('dev'));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(cookieParser());
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.use('/', require('./routes/index'));
+    app.use('/users', require('./routes/users'));
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+    app.use(function(req, res, next) {
+      var err = new Error('Not Found');
+      err.status = 404;
+      next(err);
+    });
 
-// error handlers
+    if (app.get('env') === 'development') {
+      app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+          message: err.message,
+          error: err
+        });
+      });
+    }
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function(err, req, res, next) {
+      res.status(err.status || 500);
+      res.render('error', {
+        message: err.message,
+        error: {}
+      });
     });
   });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
 
 module.exports = {app, server};

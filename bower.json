@@ -1,0 +1,27 @@
+{
+  "name": "socket-boilerplate",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Stephen Barry <stephen.andrew.barry@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Shift3/butterfish-kiosk",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./public/assets",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-horizon": "^0.1.0",
+    "bootstrap": "^3.3.7",
+    "lodash": "^4.15.0",
+    "moment": "^2.14.1",
+    "mousetrap": "^1.6.0",
+    "async": "^2.0.1",
+    "bootstrap-confirmation2": "^2.4.0"
+  }
+}

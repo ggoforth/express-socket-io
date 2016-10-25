@@ -1,0 +1,286 @@
+{
+   "name":"Jenny S",
+   "seats":[
+      {
+         "bowl_size":"large",
+         "selected_items":{
+            "Base":[
+               {
+                  "_id":"579971f6c874d8be2cbc2dd9",
+                  "item":"White Rice",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:81",
+                  "type":"Base"
+               }
+            ],
+            "Protein":[
+               {
+                  "_id":"579971f6c874d8be2cbc2de0",
+                  "item":"Salmon",
+                  "points":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:102",
+                  "type":"Protein"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2de3",
+                  "item":"Tofu",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:105",
+                  "type":"Protein"
+               }
+            ],
+            "Sauce":[
+               {
+                  "_id":"579971f6c874d8be2cbc2de8",
+                  "item":"Citrus Ponzu",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:130",
+                  "type":"Sauce"
+               }
+            ],
+            "Topping":[
+               {
+                  "_id":"579971f6c874d8be2cbc2df3",
+                  "item":"Shiso",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:160",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2dfd",
+                  "item":"Blistered Shishito Peppers",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:171",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2e03",
+                  "meta":"PREMIUM",
+                  "item":"Macadamia Nuts",
+                  "points":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:178",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2e03",
+                  "meta":"PREMIUM",
+                  "item":"Macadamia Nuts",
+                  "points":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:178",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2e08",
+                  "meta":"COMPLIMENTARY",
+                  "item":"Green onion",
+                  "points":0,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:182",
+                  "type":"Topping"
+               }
+            ],
+            "Sides":[
+
+            ],
+            "Beverage":[
+               {
+                  "_id":"579971f6c874d8be2cbc2e14",
+                  "item":"Soda",
+                  "points":0,
+                  "price":2.5,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:262",
+                  "type":"Beverage"
+               }
+            ]
+         },
+         "special_instructions":"No ice in the soda."
+      },
+      {
+         "bowl_size":"medium",
+         "selected_items":{
+            "Base":[
+               {
+                  "_id":"579971f6c874d8be2cbc2dd9",
+                  "item":"White Rice",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:81",
+                  "type":"Base"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2dd9",
+                  "item":"White Rice",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:81",
+                  "type":"Base"
+               }
+            ],
+            "Protein":[
+               {
+                  "_id":"579971f6c874d8be2cbc2ddf",
+                  "item":"Tuna",
+                  "points":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:101",
+                  "type":"Protein"
+               }
+            ],
+            "Sauce":[
+               {
+                  "_id":"579971f6c874d8be2cbc2dec",
+                  "item":"Creamy Coconut",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:133",
+                  "type":"Sauce"
+               }
+            ],
+            "Topping":[
+               {
+                  "_id":"579971f6c874d8be2cbc2dfc",
+                  "item":"Bonito Flakes",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:170",
+                  "type":"Topping"
+               }
+            ],
+            "Sides":[
+               {
+                  "_id":"579971f6c874d8be2cbc2e10",
+                  "item":"Green Tea Popcorn",
+                  "points":0,
+                  "price":2.5,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:250",
+                  "type":"Sides"
+               }
+            ],
+            "Beverage":[
+
+            ]
+         },
+         "special_instructions":""
+      },
+      {
+         "bowl_size":"large",
+         "selected_items":{
+            "Base":[
+               {
+                  "_id":"579971f6c874d8be2cbc2dde",
+                  "item":"Wonton Chips",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:86",
+                  "type":"Base"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2dda",
+                  "item":"Brown Rice",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:82",
+                  "type":"Base"
+               }
+            ],
+            "Protein":[
+               {
+                  "_id":"579971f6c874d8be2cbc2de5",
+                  "item":"Chicken",
+                  "points":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:107",
+                  "type":"Protein"
+               }
+            ],
+            "Sauce":[
+               {
+                  "_id":"579971f6c874d8be2cbc2de9",
+                  "item":"Sriracha Ponzu",
+                  "points":1,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:131",
+                  "type":"Sauce"
+               }
+            ],
+            "Topping":[
+               {
+                  "_id":"579971f6c874d8be2cbc2df8",
+                  "item":"Carrots",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:164",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2df8",
+                  "item":"Carrots",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:164",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2df4",
+                  "item":"Crushed Wasabi Peas",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:167",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2dfe",
+                  "item":"Crispy Garlic",
+                  "points":2,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:172",
+                  "type":"Topping"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2e01",
+                  "meta":"PREMIUM",
+                  "item":"Charred Habanero",
+                  "points":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:175",
+                  "type":"Topping"
+               }
+            ],
+            "Sides":[
+
+            ],
+            "Beverage":[
+               {
+                  "_id":"579971f6c874d8be2cbc2e12",
+                  "item":"Blackberry Mint Ice Tea",
+                  "points":0,
+                  "price":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:259",
+                  "type":"Beverage"
+               },
+               {
+                  "_id":"579971f6c874d8be2cbc2e12",
+                  "item":"Blackberry Mint Ice Tea",
+                  "points":0,
+                  "price":3,
+                  "location_id":"5DMDEE8XB8VRH",
+                  "$$hashKey":"object:259",
+                  "type":"Beverage"
+               }
+            ]
+         },
+         "special_instructions":"I'm thirsty."
+      }
+   ]
+}
