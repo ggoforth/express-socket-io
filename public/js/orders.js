@@ -3,7 +3,8 @@
   'use strict';
 
   var socket = io.connect(),
-    orders = [];
+    orders = [],
+    ordersToBePrinted = [];
 
   /**
    * Join a given room.
@@ -133,6 +134,7 @@
      */
     storeOrder: function (order) {
       orders.push(order);
+      ordersToBePrinted.push(order);
       return order;
     },
 
@@ -164,6 +166,21 @@
 
       //run the series.
       async.series(orders);
+    },
+
+    /**
+     * Interval for checking if there are any orders to be printed.
+     * 
+     * @returns {number|*|Object}
+     */
+    syncPrint: function () {
+      var me = this;
+      return setInterval(function () {
+        if (ordersToBePrinted.length) {
+          var toBePrinted = ordersToBePrinted.splice(0, ordersToBePrinted.length);
+          me.executeSyncPrint(toBePrinted);
+        }
+      }, 50); 
     },
 
     /**
@@ -201,8 +218,6 @@
           window.disablePrintFor(function () {
             me.runOrderNotifications(orders[0], true);
           });
-
-          me.executeSyncPrint(orders);
         }
       });
     }

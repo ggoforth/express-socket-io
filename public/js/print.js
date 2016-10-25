@@ -253,5 +253,5 @@
   };
 
   window.printOrder = printOrder;
-  Orders.registerOrderNotification(printOrder);
+  // Orders.registerOrderNotification(printOrder);
 }());

@@ -339,5 +339,6 @@
   Orders.getInitialOrders()
     .then(function () {
       if (!Orders.numOrders()) $body.addClass('no-orders');
+      Orders.syncPrint();
     });
 }(jQuery, _));
